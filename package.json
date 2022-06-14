@@ -44,7 +44,7 @@
     "typeface-dm-sans": "^1.1.3"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "^4.9.0",
+    "@netlify/plugin-nextjs": "^4.7.1",
     "imagemin-mozjpeg": "^9.0.0",
     "imagemin-optipng": "^8.0.0",
     "imagemin-svgo": "^8.0.0",
