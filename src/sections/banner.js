@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, Container, Box, Heading, Text, Image, Button,Link } from 'theme-ui';
-import BannerImg from 'assets/youthBG.jpg';
+import BannerImg from 'assets/youthBg.jpg';
 import ShapeLeft from 'assets/shape-left.png';
 import ShapeRight from 'assets/shape-right.png';
 
