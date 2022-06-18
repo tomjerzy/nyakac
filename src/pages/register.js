@@ -97,7 +97,7 @@ export default function Register() {
                     <option value="female">Female</option>
                 </Select>
                 
-                    <input 
+                    <input  required={true}
                         placeholder='First name' 
                         value={user.f_name} 
                         maxLength="30"
@@ -105,7 +105,7 @@ export default function Register() {
                         name="f_name"
                         style={styles.input}
                         onChange={updateForm}/> 
-                    <input 
+                    <input  required={true}
                         placeholder='Last name' 
                         value={user.l_name} 
                         name="l_name" 
@@ -113,7 +113,7 @@ export default function Register() {
                         type="text" 
                         style={styles.input}
                         onChange={updateForm}/> 
-                    <input 
+                    <input  required={true}
                         placeholder='Username' 
                         name="username" 
                         value={user.username} 
@@ -121,7 +121,7 @@ export default function Register() {
                         type="text" 
                         style={styles.input}
                         onChange={updateForm}/> 
-                    <input 
+                    <input  required={true}
                         placeholder='Email address' 
                         name="email" 
                         value={user.email} 
@@ -130,7 +130,7 @@ export default function Register() {
                         style={styles.input}
                         onChange={updateForm}/> 
                 
-                <input 
+                <input  required={true}
                     placeholder='Phone number' 
                     name="phone" 
                     value={user.phone} 
@@ -139,7 +139,7 @@ export default function Register() {
                     style={styles.input}
                     onChange={updateForm}/>
                 <Flex sx={{alignItems: 'center'}}>
-                    <input 
+                    <input  required={true}
                         placeholder='Password' 
                         value={user.password} 
                         maxLength="50" 

@@ -188,13 +188,13 @@ export default function Profile() {
                 </Flex>
                 
                   <Flex color="primary" p={2} m={3}>
-                    <Link m={2}>
+                    <Link m={2} href={user.fb}>
                     <FaFacebook />
                     </Link>
-                    <Link m={2}>
+                    <Link m={2} href={user.twitter}>
                     <FaTwitter />
                     </Link>
-                    <Link m={2}>
+                    <Link m={2}  href={user.ig}>
                     <FaInstagram />
                     </Link>
                     

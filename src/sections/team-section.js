@@ -22,6 +22,7 @@ export default function TeamSection() {
   },[])
   return (
     <section id="team">
+      {data.length > 0 &&
       <Container>
         <SectionHeader
         slogan="our team"
@@ -46,7 +47,7 @@ export default function TeamSection() {
           ))}
          
         </Grid>
-      </Container>
+      </Container>}
     </section>
   );
 }
