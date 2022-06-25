@@ -6,14 +6,13 @@ import SectionHeader from 'components/section-header';
 import TeamCard from 'components/team-card';
 import { FaFacebookF, FaTwitter, FaInstagram, FaUser } from 'react-icons/fa';
 
-import Male from 'assets/male.png';
-import Lady from 'assets/woman.png';
-
-
 export default function TeamSection() {
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('/api/get-users')
+    fetch('/api/fetch-users', {
+      method: 'GET',
+      mode: 'cors'
+    })
     .then(res => res.json())
     .then(data => setData(data))
     .catch(err => {
@@ -35,7 +34,8 @@ export default function TeamSection() {
             src={item.avatar}
             altText={item.f_name}
             title={ item.f_name + item.l_name}
-            designation={item.About ? item.About.title : null}
+            username={item.username}
+            designation={item.title}
             id={item.id}
             social={[
               {path: item.fb, name: 'Facebook', icon: <FaFacebookF />},

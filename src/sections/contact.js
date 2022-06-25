@@ -15,7 +15,7 @@ export default function TeamCard({ src, altText, title, designation, social }) {
     f_name: '',
     l_name: '',
     email: '',
-    message: ''
+    messages: ''
   })
   const items = [
     { path: 'mailto:contact@youngchange.com',text: 'contact@nyakachyouth.com', icon: <FaMailBulk/>},
@@ -40,10 +40,15 @@ export default function TeamCard({ src, altText, title, designation, social }) {
         },
         body: JSON.stringify(dta)
       })
-    
+      setDta({...dta,
+        f_name: '',
+        l_name: '',
+        email: '',
+        messages: ''
+      })
      setNotice({...notice,
         text: 'Submitted successfully',
-        bg: 'secondary'})
+        bg: 'green'})
         setTimeout(() => {
           setNotice({...notice,
           text:''})
@@ -83,28 +88,28 @@ export default function TeamCard({ src, altText, title, designation, social }) {
                       </Box>
                       <Box>
                           <Flex>
-                            <input 
+                            <input  required
                               placeholder='First name' 
                               name="f_name" 
                               maxLength={20} 
                               style={styles.input} 
                               value={dta.f_name} 
                               onChange={updateData}/>
-                            <input placeholder='Last name' maxLength={20} style={styles.input}
+                            <input placeholder='Last name' required maxLength={20} style={styles.input}
                             value={dta.l_name}
                             name="l_name" 
                             onChange={updateData}/>
                           </Flex>
                         <Box>
-                          <input placeholder='Email address' type="email" maxLength={20} style={styles.input}
+                          <input placeholder='Email address' required type="email" maxLength={20} style={styles.input}
                           value={dta.email}
                           name="email" 
                           onChange={updateData}/>
                         </Box>
                         <Box>
-                         <textarea placeholder='What can we help with?'
-                         value={dta.message}
-                         name="message" 
+                         <textarea placeholder='What can we help with?' required
+                         value={dta.messages}
+                         name="messages" 
                          onChange={updateData} maxLength={200} rows="4" cols="50" style={styles.input}/> 
                         </Box>
                         

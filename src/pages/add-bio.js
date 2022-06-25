@@ -7,29 +7,14 @@ import theme from 'theme';
 import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
-import router from 'next/router';
-
-export default function AddBio() {
+import { absoluteUrl } from '../../middleware/utils';
+import Cookies from 'js-cookie';
+import Router, { useRouter } from 'next/router';
+export default function AddBio(props) {
+    const { bio } = props
     const [active, setActive] = useState(false)
-
-    useEffect(() => {
-        const dt  = JSON.parse(localStorage.getItem('user'))
-        setDta({...dta, id: dt.id})  
-    },[])
-
-    const [dta, setDta] = useState({
-        id: '',
-        district: '',
-        location: '',
-        sublocation: '',
-        ward: '',
-        profession: '',
-        achievements:'',
-
-    })
+    const [dta, setDta] = useState(bio)
     //const avatar = require(`assets/${user.avatar}`)
-    
-    
     const [disabled, setDisabled] = useState(false)
     const [ notice, setNotice] = useState({
         color: '#ffffff',
@@ -37,6 +22,13 @@ export default function AddBio() {
         bg: 'secondary'
     })
  
+    useEffect(() => {
+        const rawAuth = Cookies.get('auth')
+        if(rawAuth) {
+            const jsonAuth = JSON.parse(rawAuth)
+            setDta({...dta, userId: jsonAuth.id, username: jsonAuth.username })
+        }
+    },[props])
 
     const updateForm = (e) => {
         try {
@@ -52,7 +44,7 @@ export default function AddBio() {
     const submitData = (event) => {
         event.preventDefault()
         try {
-            fetch('/api/add-info',{
+            fetch('/api/edit-bio',{
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -67,7 +59,8 @@ export default function AddBio() {
                 })
                 setTimeout(() => {
                     setNotice({...notice, text: ''})
-                    router.push({pathname: '/profile', query: {id: dta.id}})
+                    Router.push({pathname: '/profile', query: {username: dta.username}})
+                  
                 }, 3000)
             })
             
@@ -99,7 +92,7 @@ export default function AddBio() {
             <Text>Let us know you more</Text>
             </Box>
             <Box>
-                {dta.id ? 
+        
                 <form onSubmit={submitData}> 
                 <input
                         placeholder='District of residence' 
@@ -110,9 +103,9 @@ export default function AddBio() {
                         onChange={updateForm}/> 
                     <input
                         placeholder='Location' 
-                        value={dta.location} 
+                        value={dta.origin} 
                         type='text'
-                        name="location"
+                        name="origin"
                         style={styles.input}
                         onChange={updateForm}/> 
                     <input
@@ -144,7 +137,7 @@ export default function AddBio() {
                         style={styles.input}
                         onChange={updateForm}/>
             <Button variant="secondary" mb="20px" type="submit" disabled={disabled}>Add info</Button>
-    </form> : <Text>Loading data...</Text>}
+    </form>
                 
         
             </Box>
@@ -219,3 +212,19 @@ const styles = {
     ],
   },
 };
+
+export async function getServerSideProps(context) {
+    const { query, req } = context;
+    const { nextPage } = query;
+    const { origin } = absoluteUrl(req);
+    const referer = req.headers.referer || '';
+    const nextPageUrl = !isNaN(nextPage) ? `?nextPage=${nextPage}` : '';
+    const baseApiUrl = `${origin}/api`;
+    const userApi = await fetch(`${baseApiUrl}/get-bio/${query.id}`)
+    const bio = await userApi.json();
+    return {
+      props: {
+        bio
+      },
+    };
+  }

@@ -14,10 +14,11 @@ import WorkFlow from '../sections/workflow';
 import TeamSection from '../sections/team-section';
 import TestimonialCard from '../sections/testimonial';
 import Contact from '../sections/contact'
-
+import { absoluteUrl } from '../../middleware/utils';
 
 import Values from 'components/values'
-export default function IndexPage() {
+export default function Home(props) {
+  const { user, origin } = props;
   return (
     <ThemeProvider theme={theme}>
         <Layout>
@@ -38,4 +39,16 @@ export default function IndexPage() {
         </Layout>
     </ThemeProvider>
   );
+}
+
+
+export async function getServerSideProps(context) {
+  const { req } = context;
+  const { origin } = absoluteUrl(req);
+
+  return {
+    props: {
+      origin,
+    },
+  };
 }

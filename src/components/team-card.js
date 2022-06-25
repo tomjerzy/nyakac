@@ -2,7 +2,7 @@
 import { jsx } from 'theme-ui';
 import { Text, Heading, Image, Box, Link, Button } from 'theme-ui';
 import router from 'next/router';
-export default function TeamCard({ src, altText, title, designation, social, id }) {
+export default function TeamCard({ src, altText, title, designation, social, username }) {
   return (
     <Box sx={styles.card}>
       <Image src={src} alt={altText} sx={styles.memberThumb}/>
@@ -21,7 +21,7 @@ export default function TeamCard({ src, altText, title, designation, social, id 
           </Link>
         ))}
       </Box>
-      <Button onClick={() => router.push({pathname: '/profile', query: {id: id}})} 
+      <Button onClick={() => router.push({pathname: '/profile', query: {username: username}})} 
       className="donate_btn" 
       variant="secondary" aria-label="Donate">Profile</Button>
     </Box>

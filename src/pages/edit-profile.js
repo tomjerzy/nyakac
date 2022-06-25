@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import React, { useState, useEffect } from 'react';
-
 import { jsx,ThemeProvider,Container,Text, Box, Grid,Image, Heading, Button, Link, Flex, Select} from 'theme-ui';
 import theme from 'theme';
 // import SEO from 'components/seo';
@@ -8,29 +7,14 @@ import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
 import { useRouter } from 'next/router';
-export default function EditProfile() {
+import { absoluteUrl } from '../../middleware/utils';
+export default function EditProfile(props) {
+    const { currentUser} = props
     const router = useRouter()
     const [active, setActive] = useState(true)
-
-    useEffect(() => {
-        const dt  = JSON.parse(localStorage.getItem('user'))
-        setUser(dt)  
-    },[])
-
-    const [user, setUser] = useState({
-        f_name: '',
-        l_name: '',
-        avatar: '',
-        username: '',
-        email: '',
-        phone: '',
-        ig: '',
-        fb: '',
-        twitter: ''
-    })
+    const [user, setUser] = useState(currentUser)
     //const avatar = require(`assets/${user.avatar}`)
-    
-    
+
     const [disabled, setDisabled] = useState(false)
     const [ notice, setNotice] = useState({
         color: '#ffffff',
@@ -62,13 +46,13 @@ export default function EditProfile() {
                 body: JSON.stringify(user)
             })
             .then(resp => resp.json())
-            .then( data =>  {
-                localStorage.setItem('user', JSON.stringify(data))
+            .then( result =>  {
+              //Cookies.set('auth', JSON.stringify(result.auth));
                 setNotice({...notice, 
                     text: 'Update successful',
                     bg: 'secondary',
                 })
-                router.push({pathname: '/profile', query: {id: data.id}})
+                router.push({pathname: '/'})
             })
             
         } catch(e){
@@ -98,7 +82,7 @@ export default function EditProfile() {
             </Box>
             <Box>
                 <Heading as="h5" mb="15px">Update your profile</Heading>
-                {user.f_name ? 
+                {user.id ? 
                 <form onSubmit={submitData}> 
                     <input 
                         placeholder='First name' 
@@ -165,7 +149,7 @@ export default function EditProfile() {
                         name="ig"
                         onChange={updateForm}/>
             <Button variant="secondary" mb="20px" type="submit" disabled={disabled}>Update profile</Button>
-    </form> : <Text>Loading data</Text>}
+    </form> : <Text>User not found</Text>}
                 
         
             </Box>
@@ -188,6 +172,22 @@ export default function EditProfile() {
  
   );
 }
+
+
+export async function getServerSideProps(context) {
+    const { query, req } = context;
+    const { origin } = absoluteUrl(req);
+  
+    const referer = req.headers.referer || '';
+    const baseApiUrl = `${origin}/api`;
+    const userApi = await fetch(`${baseApiUrl}/${query.username}`)
+    const currentUser = await userApi.json();
+    return {
+      props: {
+        currentUser
+      },
+    };
+  }
 
 const styles = {
   workflow: {

@@ -1,29 +1,28 @@
 /** @jsx jsx */
 import React, { useState, useEffect } from 'react';
-
 import { jsx,ThemeProvider,Container,Text, Box, Grid,Image, Heading, Button, Link, Flex, Select} from 'theme-ui';
 import theme from 'theme';
 // import SEO from 'components/seo';
 import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
-import { useRouter } from 'next/router';
-
-export default function AddInfo() {
+import Cookies from 'js-cookie';
+import { absoluteUrl } from '../../middleware/utils';
+import Router, { useRouter } from 'next/router';
+export default function AddInfo(props) {
     const [active, setActive] = useState(false)
-  const router = useRouter()
-    useEffect(() => {
-        const dt  = JSON.parse(localStorage.getItem('user'))
-        setDta({...dta, id: dt.id})  
-    },[])
+    const {about} = props
 
-    const [dta, setDta] = useState({
-        id: '',
-        title: '',
-        education: '',
-        role: '',
-        about: ''
-    })
+    const [dta, setDta] = useState(about)
+    useEffect(() => {
+      const rawAuth = Cookies.get('auth')
+      if(rawAuth) {
+          const jsonAuth = JSON.parse(rawAuth)
+          setDta({...dta, userId: jsonAuth.id })
+      }
+    },[props])
+
+    
     //const avatar = require(`assets/${user.avatar}`)
     
     
@@ -49,7 +48,7 @@ export default function AddInfo() {
     const submitData = (event) => {
         event.preventDefault()
         try {
-            fetch('/api/create-about',{
+            fetch('/api/edit-about',{
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -64,13 +63,12 @@ export default function AddInfo() {
                 })
                 setTimeout(() => {
                     setNotice({...notice, text: ''})
-                    router.push({pathname: '/profile', query: {id: dta.id}})
+                   
+                    // Router.push(`/add-bio?id=${dta.userId}`);
+                    Router.push({pathname: '/add-bio', query: {id: dta.userId}})
                 }, 3000)
-                router.push({pathname: '/profile', query: {id: dta.id}})
             })
-            
-           
-            
+               
         } catch(e){
             setDisabled(false)
             setNotice({...notice, 
@@ -99,23 +97,22 @@ export default function AddInfo() {
             </Box>
             <Box>
                 <Heading as="h5" mb="15px">Add info</Heading>
-                {dta.id ? 
                 <form onSubmit={submitData}> 
-                <textarea rows="2"
+                <textarea rows="2" required
                         placeholder='Position in the organization' 
                         value={dta.title} 
                         type='text'
                         name="title"
                         style={styles.input}
                         onChange={updateForm}/> 
-                    <textarea rows="5"
-                        placeholder='Your role' 
-                        value={dta.role} 
+                    <textarea rows="5" minLength={5}
+                        placeholder='Your role' required
+                        value={dta.roles} 
                         type='text'
-                        name="role"
+                        name="roles"
                         style={styles.input}
                         onChange={updateForm}/> 
-                    <textarea
+                    <textarea minLength={10} required
                         rows="5"
                         placeholder='Education' 
                         value={dta.education} 
@@ -126,13 +123,13 @@ export default function AddInfo() {
                     <textarea
                         placeholder='About yourself' 
                         name="about" 
-                        value={dta.about}
+                        value={dta.about} required
                         type='text'
                         rows="5"
                         style={styles.input}
                         onChange={updateForm}/>
             <Button variant="secondary" mb="20px" type="submit" disabled={disabled}>Update info</Button>
-    </form> : <Text>Loading data...</Text>}
+    </form>
                 
         
             </Box>
@@ -154,6 +151,22 @@ export default function AddInfo() {
       </ThemeProvider>
  
   );
+}
+
+export async function getServerSideProps(context) {
+  const { query, req } = context;
+  const { nextPage } = query;
+  const { origin } = absoluteUrl(req);
+  const referer = req.headers.referer || '';
+  const nextPageUrl = !isNaN(nextPage) ? `?nextPage=${nextPage}` : '';
+  const baseApiUrl = `${origin}/api`;
+  const userApi = await fetch(`${baseApiUrl}/get-about/${query.id}`)
+  const about = await userApi.json();
+  return {
+    props: {
+      about
+    },
+  };
 }
 
 const styles = {

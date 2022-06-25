@@ -1,9 +1,6 @@
 export default {
   menuItem: [
-    {
-      path: '/',
-      label: 'Home',
-    },
+  
     {
       path: '/youth',
       label: 'Youth',

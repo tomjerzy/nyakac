@@ -2,10 +2,10 @@
 import { jsx, Box, Container, Image, Text } from 'theme-ui';
 import { Link } from 'components/link';
 import data from './footer.data';
-import FooterLogo from 'assets/logo.svg';
+import FooterLogo from 'assets/logo.png';
 import { useEffect, useState } from 'react';
-import router from 'next/router';
-
+import Router, {useRouter} from 'next/router';
+import Cookies from 'js-cookie'
 export default function Footer() {
   const [auth, setAuth] = useState(null)
   const [notice, setNotice] = useState({
@@ -14,23 +14,26 @@ export default function Footer() {
     bg: 'orange'
   })
   useEffect(() => {
-    const usr = localStorage.getItem('user')
-    if(usr) {
-    setAuth(JSON.parse(usr))
+    const cook = Cookies.get('auth')
+    if(cook) {
+       const passed = JSON.parse(cook)
+    setAuth(passed)
     }
-    
+   
   },[])
 
   const logUser = () => {
     if(auth) {
-      localStorage.clear()
+      Cookies.remove('token')
+      Cookies.remove('auth')
+      
       setNotice({...notice, 
         text: 'You have been logged out'})
         setTimeout(() => {
-          router.push('/login')
+          window.location.href = "/";
         }, 2000)
     } else {
-      router.push('./login')
+      Router.push('/user/login')
     }
   }
   
@@ -53,10 +56,11 @@ export default function Footer() {
                 </Link>
               ))}
               <Link label={auth ? 'Logout' : 'Login'} sx={styles.footer.link} onClick={logUser}/>
+             
             </nav>
           </Box>
           <Text sx={styles.footer.copyright}>
-            Copyright by {new Date().getFullYear()} Youth for Change
+            Copyright by {new Date().getFullYear()} Rural Voices
           </Text>
         </Box>
         {notice.text && 

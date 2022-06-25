@@ -31,9 +31,9 @@ export default function Donate() {
             <Box>
                 <Heading as="h5" mb="15px" sx={{color: 'secondary'}}>Enter donation details</Heading>
                 
-                <input placeholder='M-Pesa Phone number' maxlength="13" id="phone" type="number" style={styles.input}/>
+                <input placeholder='M-Pesa Phone number' maxLength="13" id="phone" type="number" style={styles.input}/>
                 
-                <input placeholder='Amount to donate' maxlength="4" type="number" style={styles.input}/>
+                <input placeholder='Amount to donate' maxLength="4" type="number" style={styles.input}/>
               <Button variant="primary" mb="20px" onClick={login} disabled={disabled}>Donate</Button>
             </Box>
         </Grid>

@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 
 import { jsx,ThemeProvider,Container,Text, Box, Grid,Image, Heading, Button, Link, Flex, Select} from 'theme-ui';
 import theme from 'theme';
@@ -7,19 +7,19 @@ import theme from 'theme';
 import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
-import router from 'next/router';
-
+import Router,{useRouter} from 'next/router';
+import Cookies from 'js-cookie';
 export default function ChangePass() {
-
+    const cookie = Cookies.get('auth')
     const [active, setActive] = useState(false)
 
-    useEffect(() => {
-        const dt  = JSON.parse(localStorage.getItem('user'))
-        setUser({...user, id: dt.id})  
-    },[])
+    useLayoutEffect(() => {
+        const dt  = JSON.parse(cookie)
+        setAuth({...auth, username: dt.username})  
+    },[cookie])
 
-    const [user, setUser] = useState({
-        id: '',
+    const [auth, setAuth] = useState({
+        username: '',
         current: '',
         new: '',
         confirm: ''
@@ -37,7 +37,7 @@ export default function ChangePass() {
 
     const updateForm = (e) => {
         try {
-            setUser({...user,
+            setAuth({...auth,
             [e.target.name]: e.target.value
             }
             )
@@ -46,10 +46,10 @@ export default function ChangePass() {
         }
     }
 
-    const submitData = (event) => {
+    const submitData = async (event) => {
         event.preventDefault()
         try {
-            if(user.new !== user.confirm) {
+            if(auth.new !== auth.confirm) {
                 setNotice({
                     text: 'Passwords do not match',
                     bg: 'primary',
@@ -58,7 +58,7 @@ export default function ChangePass() {
                 setTimeout(() => {
                     setNotice({...notice, text: ''})
                 }, 3000)
-            } else if (user.current == user.confirm) {
+            } else if (auth.current == auth.confirm) {
                 setNotice({
                     text: 'Current password is the same as the new password',
                     bg: 'orange',
@@ -68,31 +68,41 @@ export default function ChangePass() {
                     setNotice({...notice, text: ''})
                 }, 3000)
             } else {
-                fetch('/api/change-password',{
+               const data = await fetch('/api/change-password',{
                     method: 'POST',
                     mode: 'cors',
                     headers: {
                         'Content-Type': 'application/json'
                       },
-                    body: JSON.stringify(user)
+                    body: JSON.stringify(auth)
                 })
-                .then( data =>  {
+            
+                if(data.status === 200) {
                     setNotice({...notice, 
                         text: 'Password changed successfully',
                         bg: 'green',
                     })
                     setTimeout(() => {
-                        setNotice({...notice, text: ''})
-                        router.push({pathname: '/profile', query:{id: user.id}})
+                        setNotice({...notice, text: data.message})
+                        Router.push({pathname: '/profile', query:{username: auth.username}})
                     }, 1000)
-                })
+                } else if (data.status=== 400) {
+                    setNotice({...notice, 
+                        text: "Could not verify credentials",
+                        bg: 'primary',
+                    })
+                    setTimeout(() => {
+                        setNotice({...notice, text: ''})
+                        
+                    }, 1000)
+                }
             }
            
             
         } catch(e){
             setDisabled(false)
             setNotice({...notice, 
-                text: 'Update failed',
+                text: e.error,
                 bg: 'primary',
         })
         setTimeout(() => {
@@ -116,11 +126,11 @@ export default function ChangePass() {
             </Box>
             <Box>
                 <Heading as="h5" mb="15px">Change your password</Heading>
-                {user.id ? 
+                {auth.username ? 
                 <form onSubmit={submitData}> 
                     <input 
                         placeholder='Enter current password' 
-                        value={user.current} 
+                        value={auth.current} 
                         maxLength="30"
                         type={active ? 'text' : 'password'}
                         name="current"
@@ -128,7 +138,7 @@ export default function ChangePass() {
                         onChange={updateForm}/> 
                     <input 
                         placeholder='Enter new password' 
-                        value={user.new} 
+                        value={auth.new} 
                         name="new" 
                         maxLength="30" 
                         type={active ? 'text' : 'password'}
@@ -137,7 +147,7 @@ export default function ChangePass() {
                     <input 
                         placeholder='Confirm new password' 
                         name="confirm" 
-                        value={user.confirm} 
+                        value={auth.confirm} 
                         maxLength="30" 
                         type={active ? 'text' : 'password'}
                         style={styles.input}

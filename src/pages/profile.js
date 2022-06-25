@@ -1,18 +1,20 @@
 /** @jsx jsx */
 import { jsx,ThemeProvider,Container,Text, Box, Grid,Image, Heading, Button, Link, Flex} from 'theme-ui';
 import theme from 'theme';
+import Cookies from 'js-cookie'
 import Layout from 'components/layout';
 import { FaPhoneAlt,FaMailBulk,FaMapPin, FaUserAlt, FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
-import { useEffect, useState, useRef } from 'react';
-import { useRouter } from 'next/router';
+import { useLayoutEffect, useState, useRef, useEffect } from 'react';
 const axios = require('axios')
 // import SEO from 'components/seo';
+const cook = Cookies.get('auth')
+import { absoluteUrl } from '../../middleware/utils';
+import Router, {useRouter} from 'next/router'
 
-export default function Profile() {
+export default function Profile(props) {
+  const [auth, setAuth] = useState({})
+  const { user, query } = props;
   const inputRef = useRef(null)
-  const router = useRouter()
-  const [id, setId] = useState(router.query.id)
-  const [auth, setAuth] = useState({id: ''})
   const [file, setFile] = useState(null)
   const [fileDataURL, setFileDataURL] = useState(null)
   const [notice, setNotice] = useState({
@@ -20,25 +22,23 @@ export default function Profile() {
     bg: '',
     color: '#fff'
   })
-  const [user, setUser] = useState(null)
+
   const updateMessage = (e) => {
     setMessage({...message, 
     [e.target.name]: e.target.value})
   }
 
-  useEffect(() => {
-    const rx = localStorage.getItem('user')
-    if(rx) {
-      setAuth(JSON.parse(rx))
-    }
-    fetchUser()
+  useLayoutEffect(() => {
+      if(cook) {
+        setAuth(JSON.parse(cook))
+      }
   },[])
 
   const [message, setMessage] = useState({
-    ReceiverId: 2,
-    name: '',
+    receiver: user.id,
+    f_name: '',
     contact: '',
-    message: ''
+    messages: ''
   })
     const handleClick = () => {
       inputRef.current.click()
@@ -76,7 +76,7 @@ export default function Profile() {
       const config = {
         headers: { 'content-type': 'multipart/form-data' },
         onUploadProgress: (event) => {
-          console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
+          // console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
         },
       };
       const formData = new FormData()
@@ -92,6 +92,9 @@ export default function Profile() {
           setNotice({...notice, text: ''})
           setFile(null)
         }, 2000)
+        Cookies.remove('auth')
+        Cookies.remove('token')
+        Router.push('/user/login')
       } catch (e) {
         setNotice({...notice, 
           text: 'Failed to upload file',
@@ -103,13 +106,8 @@ export default function Profile() {
       }
      
     }
-  const fetchUser = () => {
-    fetch(`/api/fetch-user/${id}`)
-    .then(resp => resp.json())
-    .then(ext => {
-      setUser(ext)
-    })
-  }
+ 
+  
 
   const sendMessage = (e) => {
     e.preventDefault()
@@ -121,6 +119,11 @@ export default function Profile() {
         },
         body: JSON.stringify(message)
       }).then(() => {
+        setMessage({...message, 
+        f_name: '',
+        contact: '',
+        messages: ''
+      })
         setNotice({...notice, 
           text: 'Message sent successfully',
           bg: 'green',
@@ -147,7 +150,8 @@ export default function Profile() {
       <Layout>
       {/* <SEO title="Nyakach" /> */}
       <section sx={styles.workflow}/>
-      {user ? 
+
+      {user.id ? 
       <Container>
             <Grid sx={styles.grid}>
                 <Box sx={{textAlign: 'center', p: 2, display: 'flex', flexDirection: 'column'}}>
@@ -182,10 +186,14 @@ export default function Profile() {
                   <FaUserAlt/>
                   <Text ml="5px">{user.username}</Text>
                 </Flex>
-                <Flex>
+                {user.phone && (
+
+                   <Flex>
                   <FaPhoneAlt/>
                   <Text ml="5px">0{user.phone}</Text>
                 </Flex>
+                )}
+               
                 
                   <Flex color="primary" p={2} m={3}>
                     <Link m={2} href={user.fb}>
@@ -205,66 +213,65 @@ export default function Profile() {
             <Grid sx={styles.grid}>
               <section sx={{  boxShadow: ['none', null, '0 4px 10px rgba(39, 83, 123, 0.12)'], p: 2}}> 
                
-              {user.About &&
               <div>
                     <Box my={3}>
                   <Heading>
                     ABOUT
                   </Heading>
-                  <Text>{user.About.about}</Text>
+                  <Text>{user.about}</Text>
                 </Box>
 
                 <Box>
                   <Heading>
                     ROLE
                   </Heading>
-                  <Text>{user.About.role}</Text>
+                  <Text>{user.roles}</Text>
                 </Box>
                 <Box my={2}>
                   <Heading>
                     EDUCATION
                   </Heading>
-                  <Text>{user.About.education}</Text>
+                  <Text>{user.education}</Text>
                 </Box>
               </div>
             
-                }
-                {user.Info && 
+                
+                
                 <Box my={2}>
                   <Heading>
                     PROFESSION
                   </Heading>
-                  <Text>{user.Info.profession}</Text>
+                  <Text>{user.profession}</Text>
                 </Box>
-                }
+                
               </section>
               
               <Box mb={3}>
-                {user.Info &&
+               
                 <div>
                   <Heading as="h2">Location details</Heading>
                   <Box>
-                  <Text>Comes from {user.Info.district} district, {user.Info.location} location, {user.Info.sublocation} sub-location and {user.Info.ward} ward.</Text>
+                  <Text>Comes from {user.district} district, {user.origin} location, {user.sublocation} sub-location and {user.ward} ward.</Text>
                   </Box>
                 <Box>
                   <Heading as="h2">Achievements</Heading>
-                  <Text>{user.Info.achievements}</Text>
+                  <Text>{user.achievements}</Text>
                 </Box>
                 
                 </div>
-                }
+                
                 {auth.id !== user.id &&
                 <Box>
                   <hr/>
                    <Heading>Leave a message to {user.f_name}</Heading>
                 <form onSubmit={sendMessage}>
-                  <input placeholder='Your name' sx={styles.input} name="name" value={message.name} 
+                  <input placeholder='Your name' sx={styles.input} name="f_name" value={message.f_name} 
                   onChange={updateMessage}/>
                   <input placeholder='Phone or email address' sx={styles.input} name="contact"  
                   value={message.contact}
                   onChange={updateMessage}/>
-                  <textarea rows="5" placeholder='Your message'  sx={styles.input} name="message" 
-                  value={message.message}
+                  <textarea rows="5" placeholder='Your message'  sx={styles.input} name="messages" 
+                  value={message.messages}
                   onChange={updateMessage}/>
                   <Button type="submit" variant="primary">Submit</Button>
                 </form>
@@ -272,14 +279,14 @@ export default function Profile() {
       }
               </Box>
             </Grid>
-            {auth.id == id &&
+            {auth.id == user.id &&
             <section>
                 <Grid sx={styles.grid}>
                 <Box sx={styles.card}>
                   <Heading as="h2">Account</Heading>
-                  <Link sx={styles.link} href="/edit-profile">Edit profile</Link>
-                  <Link sx={styles.link} href="/add-about">Edit about</Link>
-                  <Link sx={styles.link} href="/add-bio">Add info</Link>
+                  <Link sx={styles.link} href={`/edit-profile?username=${auth.username}`}>Edit profile</Link>
+                  <Link sx={styles.link} href={`/add-bio?id=${auth.id}`}>Edit info</Link>
+                  <Link sx={styles.link} href={`/add-about?id=${auth.id}`}>Edit about</Link>
                   <Link sx={styles.link} href="/change-password">Change password</Link>
                   <Link sx={styles.link} onClick={() => deleteUser()}>Delete account</Link>
                 </Box>
@@ -289,7 +296,7 @@ export default function Profile() {
                   <Link sx={styles.link}>View team members</Link>
                   <Link sx={styles.link}>Enquiries</Link>
                   <Link sx={styles.link}>Create article</Link>
-                  <Link sx={styles.link}>Donations</Link>
+                  <Link sx={styles.link}>My messages</Link>
                   <Link sx={styles.link}>Share donation link</Link>
                 </Box>
                 </Grid>
@@ -309,7 +316,7 @@ export default function Profile() {
         }
           </Container>
           : <Container>
-              <Box>Loading data...</Box>
+              <Box><Text sx={{color: 'primary'}}>{user.error}</Text></Box>
             </Container>}
       </Layout>
       </ThemeProvider>
@@ -398,3 +405,22 @@ const styles = {
     ],
   },
 };
+
+export async function getServerSideProps(context) {
+  const { query, req } = context;
+  const { nextPage } = query;
+  const { origin } = absoluteUrl(req);
+  const referer = req.headers.referer || '';
+  const nextPageUrl = !isNaN(nextPage) ? `?nextPage=${nextPage}` : '';
+  const baseApiUrl = `${origin}/api`;
+  const userApi = await fetch(`${baseApiUrl}/${query.username}`)
+  const user = await userApi.json();
+  return {
+    props: {
+      origin,
+      referer,
+      user,
+      query,
+    },
+  };
+}
