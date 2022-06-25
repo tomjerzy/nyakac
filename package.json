@@ -1,13 +1,12 @@
 {
-  "name": "nyakach-for-change",
+  "name": "rural-voices",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "node database.js && next dev",
     "build": "node database.js && next build && next export",
     "postbuild": "next-sitemap",
-    "start": "node database.js && next start",
-    "export": "next export"
+    "start": "node database.js && next start"
   },
   "dependencies": {
     "aws-sdk": "^2.1162.0",
