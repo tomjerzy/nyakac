@@ -1,19 +1,21 @@
 /** @jsx jsx */
 import { jsx,ThemeProvider,Container,Text, Box, Grid,Image, Heading, Button, Link, Flex} from 'theme-ui';
 import theme from 'theme';
-import Cookies from 'js-cookie'
+//import Cookies from 'js-cookie'
 import Layout from 'components/layout';
 import { FaPhoneAlt,FaMailBulk,FaMapPin, FaUserAlt, FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
-import { useLayoutEffect, useState, useRef, useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 const axios = require('axios')
 // import SEO from 'components/seo';
-const cook = Cookies.get('auth')
+//const cook = Cookies.get('auth')
 import { absoluteUrl } from '../../middleware/utils';
-import Router, {useRouter} from 'next/router'
+import {useRouter} from 'next/router'
 
-export default function Profile(props) {
+export default function Profile() {
+  const router = useRouter()
   const [auth, setAuth] = useState({})
-  const { user, query } = props;
+  const [alert, setAlert] = useState(false)
+  const [user, setUser] = useState({})
   const inputRef = useRef(null)
   const [file, setFile] = useState(null)
   const [fileDataURL, setFileDataURL] = useState(null)
@@ -23,12 +25,38 @@ export default function Profile(props) {
     color: '#fff'
   })
 
+  useEffect(() => {
+    fetchUser()
+  },[router.query])
+
+  async function fetchUser() {
+    const userApi = await fetch(`/api/${router.query.username}`)
+    const user = await userApi.json();
+    setUser(user)
+  }
+  
+  const deleteUser = async () => {
+    try {
+        setAlert(false)
+          await fetch('/api/delete-account', {
+              method: 'POST',
+              body: auth.id
+            })
+            localStorage.clear()
+            router.push('/')
+    } catch(e) {
+      console.log(e)
+    }
+    
+  }
+
   const updateMessage = (e) => {
     setMessage({...message, 
     [e.target.name]: e.target.value})
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    const cook = localStorage.getItem('auth')
       if(cook) {
         setAuth(JSON.parse(cook))
       }
@@ -68,9 +96,6 @@ export default function Profile(props) {
       }
     },[file])
 
-    const deleteUser = () => {
-      alert('Operation not allowed!')
-    }
 
     const uploadFile = async () => {
       const config = {
@@ -92,9 +117,8 @@ export default function Profile(props) {
           setNotice({...notice, text: ''})
           setFile(null)
         }, 2000)
-        Cookies.remove('auth')
-        Cookies.remove('token')
-        Router.push('/user/login')
+        localStorage.clear()
+        router.push('/user/login')
       } catch (e) {
         setNotice({...notice, 
           text: 'Failed to upload file',
@@ -288,7 +312,7 @@ export default function Profile(props) {
                   <Link sx={styles.link} href={`/add-bio?id=${auth.id}`}>Edit info</Link>
                   <Link sx={styles.link} href={`/add-about?id=${auth.id}`}>Edit about</Link>
                   <Link sx={styles.link} href="/change-password">Change password</Link>
-                  <Link sx={styles.link} onClick={() => deleteUser()}>Delete account</Link>
+                  <Link sx={styles.link} onClick={() => setAlert(true)}>Delete account</Link>
                 </Box>
 
                 <Box sx={styles.card}>
@@ -314,6 +338,30 @@ export default function Profile(props) {
             <Text sx={{color: notice.color}}>{notice.text}</Text>
         </Box>
         }
+
+        {alert &&
+        <Box sx={{
+       height: '100%',
+        width: '100%',
+        backdropFilter: blur('5px'),
+        backgroundColor: '#000', 
+        textAlign: 'center', 
+        justifyContent: 'center',
+        background: 'rgba(0,0,0, 0.5)',
+        position: 'fixed', top: 0, left: 0
+        }}>
+          <Box p={3} mx='auto' my='25%' sx={{zIndex: 100,
+             borderRadius: '5px', backgroundColor: '#fff'}}>
+
+            <Text sx={{color: 'primary', fontSize: '20px', position: 'relative', bottom: 20}}>Delete account?</Text>
+            <Text>All your data will be deleted.</Text>
+            <Flex sx={{justifyContent: 'space-around'}}>
+              <Button onClick={() => setAlert(false)} className="donate_btn" variant="secondary">Cancel</Button>
+              <Button onClick={() => deleteUser()}>Delete</Button>
+            </Flex>
+          </Box>
+
+        </Box>}
           </Container>
           : <Container>
               <Box><Text sx={{color: 'primary'}}>{user.error}</Text></Box>
@@ -405,22 +453,3 @@ const styles = {
     ],
   },
 };
-
-export async function getServerSideProps(context) {
-  const { query, req } = context;
-  const { nextPage } = query;
-  const { origin } = absoluteUrl(req);
-  const referer = req.headers.referer || '';
-  const nextPageUrl = !isNaN(nextPage) ? `?nextPage=${nextPage}` : '';
-  const baseApiUrl = `${origin}/api`;
-  const userApi = await fetch(`${baseApiUrl}/${query.username}`)
-  const user = await userApi.json();
-  return {
-    props: {
-      origin,
-      referer,
-      user,
-      query,
-    },
-  };
-}

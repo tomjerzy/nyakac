@@ -7,12 +7,13 @@ import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+
 import { absoluteUrl } from '../../middleware/utils';
-export default function EditProfile(props) {
-    const { currentUser} = props
+export default function EditProfile() {
+
     const router = useRouter()
     const [active, setActive] = useState(true)
-    const [user, setUser] = useState(currentUser)
+    const [user, setUser] = useState({})
     //const avatar = require(`assets/${user.avatar}`)
 
     const [disabled, setDisabled] = useState(false)
@@ -21,7 +22,19 @@ export default function EditProfile(props) {
         text: '',
         bg: 'secondary'
     })
- 
+    useEffect(() => {
+      const rawAuth = localStorage.getItem('auth')
+      if(rawAuth) {
+        const user = JSON.parse(rawAuth)
+       fetChProfile(user.username)
+      }
+    },[])
+
+ const fetChProfile = async (username) => {
+  const userApi = await fetch(`/api/${username}`)
+  const currentUser = await userApi.json();
+  setUser(currentUser)
+ }
 
     const updateForm = (e) => {
         try {
@@ -174,20 +187,20 @@ export default function EditProfile(props) {
 }
 
 
-export async function getServerSideProps(context) {
-    const { query, req } = context;
-    const { origin } = absoluteUrl(req);
+// export async function getServerSideProps(context) {
+//     const { query, req } = context;
+//     const { origin } = absoluteUrl(req);
   
-    const referer = req.headers.referer || '';
-    const baseApiUrl = `${origin}/api`;
-    const userApi = await fetch(`${baseApiUrl}/${query.username}`)
-    const currentUser = await userApi.json();
-    return {
-      props: {
-        currentUser
-      },
-    };
-  }
+//     const referer = req.headers.referer || '';
+//     const baseApiUrl = `${origin}/api`;
+//     const userApi = await fetch(`${baseApiUrl}/${query.username}`)
+//     const currentUser = await userApi.json();
+//     return {
+//       props: {
+//         currentUser
+//       },
+//     };
+//   }
 
 const styles = {
   workflow: {

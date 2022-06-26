@@ -8,12 +8,12 @@ import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
 import { absoluteUrl } from '../../middleware/utils';
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
 import Router, { useRouter } from 'next/router';
-export default function AddBio(props) {
-    const { bio } = props
+export default function AddBio() {
+ 
     const [active, setActive] = useState(false)
-    const [dta, setDta] = useState(bio)
+    const [dta, setDta] = useState({})
     //const avatar = require(`assets/${user.avatar}`)
     const [disabled, setDisabled] = useState(false)
     const [ notice, setNotice] = useState({
@@ -23,12 +23,19 @@ export default function AddBio(props) {
     })
  
     useEffect(() => {
-        const rawAuth = Cookies.get('auth')
+        const rawAuth = localStorage.getItem('auth')
         if(rawAuth) {
             const jsonAuth = JSON.parse(rawAuth)
             setDta({...dta, userId: jsonAuth.id, username: jsonAuth.username })
+            fetchBio(jsonAuth.id)
         }
-    },[props])
+    },[])
+
+    const fetchBio = async (id) => {
+      const userApi = await fetch(`/api/get-bio/${id}`)
+      const about = await userApi.json();
+      setDta(about)
+    }
 
     const updateForm = (e) => {
         try {
@@ -59,7 +66,7 @@ export default function AddBio(props) {
                 })
                 setTimeout(() => {
                     setNotice({...notice, text: ''})
-                    Router.push({pathname: '/profile', query: {username: dta.username}})
+                    Router.push('/')
                   
                 }, 3000)
             })
@@ -212,19 +219,3 @@ const styles = {
     ],
   },
 };
-
-export async function getServerSideProps(context) {
-    const { query, req } = context;
-    const { nextPage } = query;
-    const { origin } = absoluteUrl(req);
-    const referer = req.headers.referer || '';
-    const nextPageUrl = !isNaN(nextPage) ? `?nextPage=${nextPage}` : '';
-    const baseApiUrl = `${origin}/api`;
-    const userApi = await fetch(`${baseApiUrl}/get-bio/${query.id}`)
-    const bio = await userApi.json();
-    return {
-      props: {
-        bio
-      },
-    };
-  }

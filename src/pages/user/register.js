@@ -89,9 +89,8 @@ const FORM_DATA_REGISTER = {
   },
 };
 
-function Register(props) {
+function Register() {
   const router = useRouter();
-  const { origin, baseApiUrl } = props;
   const [loading, setLoading] = useState(false);
   const [stateFormData, setStateFormData] = useState(FORM_DATA_REGISTER);
   const [stateFormError, setStateFormError] = useState([]);
@@ -264,9 +263,9 @@ function Register(props) {
       <Layout>
       {/* <SEO title="Nyakach" /> */}
       <section sx={styles.workflow}/>
-      <Container sx={{backgroundColor: '#e5e4e2', borderRadius: 5}} py="30px">
+      <Container sx={{backgroundColor: '#e5e4e2', borderRadius: 5}} py="30px" mt={6}>
       <Grid sx={styles.grid} mb="30px">
-            <Box>
+            <Box mt={8}>
                 <Image src={LoginImg}/>
             <Heading variant="heroPrimary" as="h4">
                 Create account
@@ -276,7 +275,7 @@ function Register(props) {
                 </Text>
             </Box>
             <Box>
-                <Heading as="h5" mb="15px">Create an account</Heading>
+                <Heading as="h5" mt={8}>Create an account</Heading>
           <FormRegister
             props={{
               onSubmitHandler,
@@ -307,21 +306,21 @@ function Register(props) {
 }
 
 /* getServerSideProps */
-export async function getServerSideProps(context) {
-  const { req } = context;
-  const { origin } = absoluteUrl(req);
+// export async function getServerSideProps(context) {
+//   const { req } = context;
+//   const { origin } = absoluteUrl(req);
 
-  const referer = req.headers.referer || '';
-  const baseApiUrl = `${origin}/api`;
+//   const referer = req.headers.referer || '';
+//   const baseApiUrl = `${origin}/api`;
 
-  return {
-    props: {
-      origin,
-      baseApiUrl,
-      referer,
-    },
-  };
-}
+//   return {
+//     props: {
+//       origin,
+//       baseApiUrl,
+//       referer,
+//     },
+//   };
+// }
 const styles = {
   workflow: {
       backgroundColor: '#fff',

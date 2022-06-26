@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { jsx,ThemeProvider,Container,Text, Box, Grid,Image, Heading, Button, Link, Flex, Select} from 'theme-ui';
 import theme from 'theme';
@@ -7,32 +7,34 @@ import theme from 'theme';
 import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
-import Router,{useRouter} from 'next/router';
-import Cookies from 'js-cookie';
+import {useRouter} from 'next/router';
 export default function ChangePass() {
-    const cookie = Cookies.get('auth')
+    const router = useRouter()
     const [active, setActive] = useState(false)
-
-    useLayoutEffect(() => {
-        const dt  = JSON.parse(cookie)
-        setAuth({...auth, username: dt.username})  
-    },[cookie])
-
     const [auth, setAuth] = useState({
         username: '',
         current: '',
         new: '',
         confirm: ''
     })
-    //const avatar = require(`assets/${user.avatar}`)
-    
-    
+
     const [disabled, setDisabled] = useState(false)
     const [ notice, setNotice] = useState({
         color: '#ffffff',
         text: '',
         bg: 'secondary'
     })
+
+    useEffect(() => {
+        const cookie = localStorage.getItem('auth')
+        if(cookie) {
+             const dt  = JSON.parse(cookie)
+            setAuth(dt)
+        }
+         
+    },[])
+    
+   
  
 
     const updateForm = (e) => {
@@ -84,7 +86,7 @@ export default function ChangePass() {
                     })
                     setTimeout(() => {
                         setNotice({...notice, text: data.message})
-                        Router.push({pathname: '/profile', query:{username: auth.username}})
+                        router.push({pathname: '/profile', query:{username: auth.username}})
                     }, 1000)
                 } else if (data.status=== 400) {
                     setNotice({...notice, 

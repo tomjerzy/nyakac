@@ -4,7 +4,7 @@ const multer = require('multer');
 import nextConnect from 'next-connect';
 const upload = multer({
     storage: multer.diskStorage({
-      destination: './public',
+      destination: '/public',
       filename: (req, file, cb) => cb(null, file.originalname),
     }),
   });
@@ -30,7 +30,7 @@ const upload = multer({
     const db = await openDB()
     const data = await db.get('SELECT * FROM user WHERE id = ?',[id])
     const result = await db.prepare('UPDATE user SET avatar = ? WHERE id = ?')
-    await result.run(`/${req.file.filename}`, id)
+    await result.run(req.file.filename, id)
     res.status(200).json({ data: 'success' });
   });
   

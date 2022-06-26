@@ -16,7 +16,7 @@ CREATE TABLE user (
 
 CREATE TABLE about (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    userId INTEGER REFERENCES user(id),
+    userId INTEGER REFERENCES user(id) ON DELETE CASCADE,
     title VARCHAR,
     education VARCHAR,
     roles VARCHAR,
@@ -25,7 +25,7 @@ CREATE TABLE about (
 
 CREATE TABLE info (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    userId INTEGER REFERENCES user(id),
+    userId INTEGER REFERENCES user(id) ON DELETE CASCADE,
     district VARCHAR,
     sublocation VARCHAR,
     ward VARCHAR,
@@ -39,7 +39,7 @@ CREATE TABLE message (
     f_name VARCHAR,
     contact VARCHAR,
     messages VARCHAR,
-    receiver INTEGER REFERENCES user(id)
+    receiver INTEGER REFERENCES user(id) ON DELETE CASCADE
 );
 
 CREATE TABLE enquiry (

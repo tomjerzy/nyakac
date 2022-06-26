@@ -2,21 +2,21 @@
 import { jsx, Container, Flex, Button, Image } from 'theme-ui';
 import { keyframes } from '@emotion/core';
 import { Link } from 'react-scroll';
-import Router, {useRouter} from 'next/router';
+import {useRouter} from 'next/router';
 import Logo from 'components/logo';
 import LogoDark from 'assets/logo.png';
 import MobileDrawer from './mobile-drawer';
 import menuItems from './header.data';
 import { useEffect, useState } from 'react';
 import { FaBell } from 'react-icons/fa';
-import Cookies from 'js-cookie'
+//import Cookies from 'js-cookie'
 
 export default function Header({ className }) {
   const [auth, setAuth] = useState(null)
- 
+ const router = useRouter()
 
   useEffect(() => {
-    const cook = Cookies.get('auth')
+    const cook = localStorage.getItem('auth')
     if(cook) {
       const passed = JSON.parse(cook)
     setAuth(passed)
@@ -45,7 +45,7 @@ export default function Header({ className }) {
         </Flex>
         {auth &&
           <Flex>
-           <Link sx={{cursor: 'pointer'}} onClick={() => Router.push({pathname: '/profile', query:{username: auth.username}})}>
+           <Link sx={{cursor: 'pointer'}} onClick={() => router.push({pathname: '/profile', query:{username: auth.username}})}>
             <Image src={auth.avatar} sx={styles.image}/>
             </Link> 
             <Link  sx={{cursor: 'pointer'}} onClick={() => alert('No notifications')} to={'/'}>

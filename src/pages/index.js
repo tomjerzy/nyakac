@@ -40,15 +40,3 @@ export default function Home(props) {
     </ThemeProvider>
   );
 }
-
-
-export async function getServerSideProps(context) {
-  const { req } = context;
-  const { origin } = absoluteUrl(req);
-
-  return {
-    props: {
-      origin,
-    },
-  };
-}

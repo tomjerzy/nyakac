@@ -1,11 +1,11 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {ThemeProvider, Box,Container,Image,Grid,Heading, Text, Flex, Link} from 'theme-ui'
 import Router, { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
 import theme from 'theme';
 import Layout from 'components/layout';
 import LoginImg from 'assets/login.png';
-const cookie = Cookies.get('auth')
+//const cookie = Cookies.get('auth')
 /* utils */
 import { absoluteUrl } from '../../../middleware/utils';
 
@@ -40,13 +40,13 @@ const FORM_DATA_LOGIN = {
   },
 };
 
-export default function Login(props) {
-  useLayoutEffect(() => {
-    if(cookie) {
+export default function Login() {
+  useEffect(() => {
+    const user = localStorage.getItem('auth')
+    if(user) {
       Router.push('/')
     }
 },[])
-const {query} = props
   const [loading, setLoading] = useState(false);
 
   const [stateFormData, setStateFormData] = useState(FORM_DATA_LOGIN);
@@ -99,7 +99,7 @@ const {query} = props
       setStateFormError(result)
       if (result.success && result.token) {
         //Cookies.set('token', result.token);
-        Cookies.set('auth', JSON.stringify(result.auth));
+        localStorage.setItem('auth', JSON.stringify(result.auth));
         // window.location.href = referer ? referer : "/";
         // const pathUrl = referer ? referer.lastIndexOf("/") : "/";
         Router.push({pathname: '/profile', query: {username: result.auth.username}});
@@ -213,9 +213,9 @@ const {query} = props
       <Layout>
       {/* <SEO title="Nyakach" /> */}
       <section sx={styles.workflow}/>
-      <Container sx={{backgroundColor: '#e5e4e2', borderRadius: 5}} py="30px">
-      <Grid sx={styles.grid} mb="30px">
-            <Box>
+      <Container sx={{backgroundColor: '#e5e4e2', borderRadius: 5}} py={3} mt={6}>
+      <Grid sx={styles.grid}>
+          <Box mt={6}>
                 <Image src={LoginImg}/>
             <Heading variant="heroPrimary" as="h4">
                 Sign in
@@ -225,7 +225,7 @@ const {query} = props
                 </Text>
             </Box>
             <Box>
-                <Heading as="h5" mb="15px">Sign with your email and password to proceed</Heading>
+                <Heading as="h5" mt={10}>Sign with your email and password to proceed</Heading>
                 
                    <FormLogin
                       props={{
@@ -262,7 +262,6 @@ const {query} = props
 
 const styles = {
   workflow: {
-      mt: 4,
       backgroundColor: '#fff',
     py: [7, null, 9, null, null, 7],
   },
@@ -272,6 +271,7 @@ const styles = {
     color: 'primary',
     fontWeight: '400',
     mb: 2,
+    mt: 6,
     cursor: 'pointer',
     transition: 'all 0.35s',
     display: 'block',
@@ -305,18 +305,18 @@ const styles = {
   },
 };
 
-export async function getServerSideProps(context) {
-  const { query, req } = context;
-  const { nextPage } = query;
-  const { origin } = absoluteUrl(req);
-  const referer = req.headers.referer || '';
-  const nextPageUrl = !isNaN(nextPage) ? `?nextPage=${nextPage}` : '';
+// export async function getServerSideProps(context) {
+//   const { query, req } = context;
+//   const { nextPage } = query;
+//   const { origin } = absoluteUrl(req);
+//   const referer = req.headers.referer || '';
+//   const nextPageUrl = !isNaN(nextPage) ? `?nextPage=${nextPage}` : '';
   
-  return {
-    props: {
-      origin,
-      referer,
-      query,
-    },
-  };
-}
+//   return {
+//     props: {
+//       origin,
+//       referer,
+//       query,
+//     },
+//   };
+// }

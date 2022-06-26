@@ -19,7 +19,7 @@ export default async function handler(req, res){
             })
         }
         const db = await openDB()
-        const user = await db.get('SELECT * FROM user WHERE password = ? AND (email = ? OR username =? )',[password,email, email])
+        const user = await db.get('SELECT id,avatar, username FROM user WHERE password = ? AND (email = ? OR username =? )',[password,email, email])
         //await db.close()
         if (!user) {
             res.status(400).json({ status: 'error', error: 'Could not verify credentials' });

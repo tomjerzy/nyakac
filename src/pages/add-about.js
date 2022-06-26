@@ -6,21 +6,31 @@ import theme from 'theme';
 import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
 import { absoluteUrl } from '../../middleware/utils';
 import Router, { useRouter } from 'next/router';
-export default function AddInfo(props) {
+export default function AddInfo() {
     const [active, setActive] = useState(false)
-    const {about} = props
-
-    const [dta, setDta] = useState(about)
+  
+    const [dta, setDta] = useState({})
     useEffect(() => {
-      const rawAuth = Cookies.get('auth')
+      const rawAuth = localStorage.getItem('auth')
       if(rawAuth) {
           const jsonAuth = JSON.parse(rawAuth)
           setDta({...dta, userId: jsonAuth.id })
+          fetchAbout(jsonAuth.id)
       }
-    },[props])
+
+
+      
+    },[])
+
+    const fetchAbout = async (id) => {
+      const userApi = await fetch(`/api/get-about/${id}`)
+      const about = await userApi.json();
+      setDta(about)
+    }
+    
 
     
     //const avatar = require(`assets/${user.avatar}`)
@@ -153,21 +163,21 @@ export default function AddInfo(props) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const { query, req } = context;
-  const { nextPage } = query;
-  const { origin } = absoluteUrl(req);
-  const referer = req.headers.referer || '';
-  const nextPageUrl = !isNaN(nextPage) ? `?nextPage=${nextPage}` : '';
-  const baseApiUrl = `${origin}/api`;
-  const userApi = await fetch(`${baseApiUrl}/get-about/${query.id}`)
-  const about = await userApi.json();
-  return {
-    props: {
-      about
-    },
-  };
-}
+// export async function getServerSideProps(context) {
+//   const { query, req } = context;
+//   const { nextPage } = query;
+//   const { origin } = absoluteUrl(req);
+//   const referer = req.headers.referer || '';
+//   const nextPageUrl = !isNaN(nextPage) ? `?nextPage=${nextPage}` : '';
+//   const baseApiUrl = `${origin}/api`;
+//   const userApi = await fetch(`${baseApiUrl}/get-about/${query.id}`)
+//   const about = await userApi.json();
+//   return {
+//     props: {
+//       about
+//     },
+//   };
+// }
 
 const styles = {
   workflow: {

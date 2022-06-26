@@ -4,9 +4,10 @@ import { Link } from 'components/link';
 import data from './footer.data';
 import FooterLogo from 'assets/logo.png';
 import { useEffect, useState } from 'react';
-import Router, {useRouter} from 'next/router';
-import Cookies from 'js-cookie'
+import {useRouter} from 'next/router';
+//import Cookies from 'js-cookie'
 export default function Footer() {
+  const router = useRouter()
   const [auth, setAuth] = useState(null)
   const [notice, setNotice] = useState({
     text: '',
@@ -14,7 +15,7 @@ export default function Footer() {
     bg: 'orange'
   })
   useEffect(() => {
-    const cook = Cookies.get('auth')
+    const cook = localStorage.getItem('auth')
     if(cook) {
        const passed = JSON.parse(cook)
     setAuth(passed)
@@ -24,8 +25,7 @@ export default function Footer() {
 
   const logUser = () => {
     if(auth) {
-      Cookies.remove('token')
-      Cookies.remove('auth')
+      localStorage.clear()
       
       setNotice({...notice, 
         text: 'You have been logged out'})
@@ -33,7 +33,7 @@ export default function Footer() {
           window.location.href = "/";
         }, 2000)
     } else {
-      Router.push('/user/login')
+      router.push('/user/login')
     }
   }
   
