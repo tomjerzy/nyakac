@@ -1,14 +1,11 @@
 /** @jsx jsx */
 import React, { useState, useEffect } from 'react';
 
-import { jsx,ThemeProvider,Container,Text, Box, Grid,Image, Heading, Button, Link, Flex, Select} from 'theme-ui';
+import { jsx,ThemeProvider,Container,Text, Box, Grid, Heading, Button} from 'theme-ui';
 import theme from 'theme';
 // import SEO from 'components/seo';
 import Layout from 'components/layout';
-import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
-import { absoluteUrl } from '../../middleware/utils';
-//import Cookies from 'js-cookie';
 import Router, { useRouter } from 'next/router';
 export default function AddBio() {
  

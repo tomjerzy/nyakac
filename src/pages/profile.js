@@ -1,14 +1,11 @@
 /** @jsx jsx */
 import { jsx,ThemeProvider,Container,Text, Box, Grid,Image, Heading, Button, Link, Flex} from 'theme-ui';
 import theme from 'theme';
-//import Cookies from 'js-cookie'
 import Layout from 'components/layout';
-import { FaPhoneAlt,FaMailBulk,FaMapPin, FaUserAlt, FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+import { FaPhoneAlt,FaMailBulk,FaUserAlt, FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
 import { useEffect, useState, useRef } from 'react';
 const axios = require('axios')
 // import SEO from 'components/seo';
-//const cook = Cookies.get('auth')
-import { absoluteUrl } from '../../middleware/utils';
 import {useRouter} from 'next/router'
 
 export default function Profile() {

@@ -3,12 +3,9 @@ import { jsx,ThemeProvider,Container,Text, Box, Grid,Image} from 'theme-ui';
 import theme from 'theme';
 import SEO from 'components/seo';
 import SectionHeader from '../components/section-header';
-import FeatureCardColumn from 'components/feature-card-column.js';
 import Layout from 'components/layout';
 import PatternBG from 'assets/patternBG.png';
 import agricImg from 'assets/agri.jpg';
-import Male from 'assets/male.png';
-import Lady from 'assets/woman.png';
 const data = [
     {
       id: 1,

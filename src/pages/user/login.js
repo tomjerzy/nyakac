@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {ThemeProvider, Box,Container,Image,Grid,Heading, Text, Flex, Link} from 'theme-ui'
 import Router, { useRouter } from 'next/router';
-//import Cookies from 'js-cookie';
 import theme from 'theme';
 import Layout from 'components/layout';
 import LoginImg from 'assets/login.png';
-//const cookie = Cookies.get('auth')
-/* utils */
-import { absoluteUrl } from '../../../middleware/utils';
 
 /* components */
 
@@ -304,19 +300,3 @@ const styles = {
     ],
   },
 };
-
-// export async function getServerSideProps(context) {
-//   const { query, req } = context;
-//   const { nextPage } = query;
-//   const { origin } = absoluteUrl(req);
-//   const referer = req.headers.referer || '';
-//   const nextPageUrl = !isNaN(nextPage) ? `?nextPage=${nextPage}` : '';
-  
-//   return {
-//     props: {
-//       origin,
-//       referer,
-//       query,
-//     },
-//   };
-// }

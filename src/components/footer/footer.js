@@ -5,7 +5,6 @@ import data from './footer.data';
 import FooterLogo from 'assets/logo.png';
 import { useEffect, useState } from 'react';
 import {useRouter} from 'next/router';
-//import Cookies from 'js-cookie'
 export default function Footer() {
   const router = useRouter()
   const [auth, setAuth] = useState(null)

@@ -7,8 +7,6 @@ import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
 import { useRouter } from 'next/router';
-
-import { absoluteUrl } from '../../middleware/utils';
 export default function EditProfile() {
 
     const router = useRouter()

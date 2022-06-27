@@ -14,11 +14,9 @@ import WorkFlow from '../sections/workflow';
 import TeamSection from '../sections/team-section';
 import TestimonialCard from '../sections/testimonial';
 import Contact from '../sections/contact'
-import { absoluteUrl } from '../../middleware/utils';
 
 import Values from 'components/values'
-export default function Home(props) {
-  const { user, origin } = props;
+export default function Home() {
   return (
     <ThemeProvider theme={theme}>
         <Layout>

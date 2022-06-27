@@ -9,7 +9,6 @@ import MobileDrawer from './mobile-drawer';
 import menuItems from './header.data';
 import { useEffect, useState } from 'react';
 import { FaBell } from 'react-icons/fa';
-//import Cookies from 'js-cookie'
 
 export default function Header({ className }) {
   const [auth, setAuth] = useState(null)

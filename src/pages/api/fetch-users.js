@@ -1,7 +1,5 @@
-
 const sqlite3 = require('sqlite3')
 const {open} = require('sqlite')
-
 
 export default async function handler(req, res){
     try {

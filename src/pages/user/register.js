@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ThemeProvider, Text, Heading, Box, Image, Grid, Container } from 'theme-ui';
 import { useRouter } from 'next/router';
 import LoginImg from 'assets/register.png';
 import theme from 'theme';
-
-/* utils */
-import { absoluteUrl } from '../../../middleware/utils';
 
 /* components */
 import Layout from 'components/layout';

@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React, { useState } from 'react';
-import { jsx,ThemeProvider,Container,Text, Box, Grid,Image, Heading, Button, Link} from 'theme-ui';
+import { jsx,ThemeProvider,Container,Text, Box, Grid,Image, Heading, Button} from 'theme-ui';
 import theme from 'theme';
 // import SEO from 'components/seo';
 import Layout from 'components/layout';

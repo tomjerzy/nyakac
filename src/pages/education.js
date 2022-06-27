@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx,ThemeProvider,Container,Text, Box, Grid,Image, Flex, Link} from 'theme-ui';
+import { jsx,ThemeProvider,Container,Text, Box, Grid,Image} from 'theme-ui';
 import theme from 'theme';
 import SEO from 'components/seo';
 import SectionHeader from '../components/section-header';
