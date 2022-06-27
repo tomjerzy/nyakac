@@ -22,7 +22,7 @@ export default function Home(props) {
   return (
     <ThemeProvider theme={theme}>
         <Layout>
-          <SEO title="Nyakach" />
+          <SEO title="Rural Voices" />
           <Banner />
           <Values />
          <ServiceSection />
