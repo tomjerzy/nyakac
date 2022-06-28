@@ -9,7 +9,6 @@ class CustomDocument extends Document {
   render() {
     return (
       <Html lang="en-US">
-        <meta http-equiv="Refresh" content="2; url=public/index.html" />
         <Head />
         <body>
           <Main />

@@ -1,6 +1,8 @@
 [build]
-  command = "npm run build"
-  publish = ".next"
+  command = "node database.js && npm run build"
+  publish = "out"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+[context.deploy-preview.environment]
+  NETLIFY_NEXT_PLUGIN_SKIP = true
