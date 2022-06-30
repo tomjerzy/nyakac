@@ -1,27 +1,14 @@
 /** @jsx jsx */
-import React, {useEffect, useState} from 'react'
 import { jsx } from 'theme-ui';
 import { Container, Grid} from 'theme-ui';
 import SectionHeader from 'components/section-header';
 import TeamCard from 'components/team-card';
-import { FaFacebookF, FaTwitter, FaInstagram, FaUser } from 'react-icons/fa';
+import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa';
 
-export default function TeamSection() {
-  const [data, setData] = useState([])
-  useEffect(() => {
-    fetch('/api/fetch-users', {
-      method: 'GET',
-      mode: 'cors'
-    })
-    .then(res => res.json())
-    .then(data => setData(data))
-    .catch(err => {
-      throw err
-    })
-  },[])
+export default function TeamSection({ data }) {
   return (
     <section id="team">
-      {data.length > 0 &&
+     
       <Container>
         <SectionHeader
         slogan="our team"
@@ -42,12 +29,9 @@ export default function TeamSection() {
               {path: item.ig, name: 'Instagram', icon: <FaInstagram />},
               {path: item.twitter, name: 'Twitter', icon: <FaTwitter />}
             ]}/>
-             
-             
           ))}
-         
         </Grid>
-      </Container>}
+      </Container>
     </section>
   );
 }

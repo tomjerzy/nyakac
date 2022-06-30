@@ -7,12 +7,12 @@ import { useEffect, useState, useRef } from 'react';
 const axios = require('axios')
 // import SEO from 'components/seo';
 import {useRouter} from 'next/router'
+import Cookies from 'js-cookie';
+import * as cookie from 'cookie';
 
-export default function Profile() {
+export default function Profile({ user, baseUrl, auth }) {
   const router = useRouter()
-  const [auth, setAuth] = useState({})
   const [alert, setAlert] = useState(false)
-  const [user, setUser] = useState({})
   const inputRef = useRef(null)
   const [file, setFile] = useState(null)
   const [fileDataURL, setFileDataURL] = useState(null)
@@ -21,25 +21,15 @@ export default function Profile() {
     bg: '',
     color: '#fff'
   })
-
-  useEffect(() => {
-    fetchUser()
-  },[router.query])
-
-  async function fetchUser() {
-    const userApi = await fetch(`/api/${router.query.username}`)
-    const user = await userApi.json();
-    setUser(user)
-  }
   
   const deleteUser = async () => {
     try {
         setAlert(false)
-          await fetch('/api/delete-account', {
+          await fetch(`${baseUrl}delete-account`, {
               method: 'POST',
               body: auth.id
             })
-            localStorage.clear()
+            Cookies.remove('auth')
             router.push('/')
     } catch(e) {
       console.log(e)
@@ -306,8 +296,8 @@ export default function Profile() {
                 <Box sx={styles.card}>
                   <Heading as="h2">Account</Heading>
                   <Link sx={styles.link} href={`/edit-profile?username=${auth.username}`}>Edit profile</Link>
-                  <Link sx={styles.link} href={`/add-bio?id=${auth.id}`}>Edit info</Link>
-                  <Link sx={styles.link} href={`/add-about?id=${auth.id}`}>Edit about</Link>
+                  <Link sx={styles.link} href="/add-bio">Edit info</Link>
+                  <Link sx={styles.link} href="/add-about">Edit about</Link>
                   <Link sx={styles.link} href="/change-password">Change password</Link>
                   <Link sx={styles.link} onClick={() => setAlert(true)}>Delete account</Link>
                 </Box>
@@ -450,3 +440,19 @@ const styles = {
     ],
   },
 };
+
+export async function getServerSideProps(context) {
+  const { query, req } = context;
+  const protocol = req.headers['x-forwarded-proto'] || 'http'
+  const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+  const cook =  cookie?.parse(req.headers.cookie)
+  const auth  = cookie?JSON.parse(cook.auth):null
+  let response = await fetch(`${baseUrl}/api/${query.username}`);
+  let data = await response.json();
+  return {
+      props: {
+         auth: auth,
+          user: data,
+      },
+  };
+}

@@ -7,33 +7,11 @@ import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
 import Router, { useRouter } from 'next/router';
-export default function AddInfo() {
+import * as cookie from 'cookie'
+
+export default function AddInfo({ baseUrl, about, auth}) {
     const [active, setActive] = useState(false)
-  
-    const [dta, setDta] = useState({})
-    useEffect(() => {
-      const rawAuth = localStorage.getItem('auth')
-      if(rawAuth) {
-          const jsonAuth = JSON.parse(rawAuth)
-          setDta({...dta, userId: jsonAuth.id })
-          fetchAbout(jsonAuth.id)
-      }
-
-
-      
-    },[])
-
-    const fetchAbout = async (id) => {
-      const userApi = await fetch(`/api/get-about/${id}`)
-      const about = await userApi.json();
-      setDta(about)
-    }
-    
-
-    
-    //const avatar = require(`assets/${user.avatar}`)
-    
-    
+    const [dta, setDta] = useState(about)
     const [disabled, setDisabled] = useState(false)
     const [ notice, setNotice] = useState({
         color: '#ffffff',
@@ -41,7 +19,6 @@ export default function AddInfo() {
         bg: 'secondary'
     })
  
-
     const updateForm = (e) => {
         try {
             setDta({...dta,
@@ -53,10 +30,10 @@ export default function AddInfo() {
         }
     }
 
-    const submitData = (event) => {
+    const submitData = async (event) => {
         event.preventDefault()
         try {
-            fetch('/api/edit-about',{
+            const resp = await fetch(`${baseUrl}edit-about`,{
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -64,18 +41,17 @@ export default function AddInfo() {
                     },
                 body: JSON.stringify(dta)
             })
-            .then( data =>  {
-                setNotice({...notice, 
-                    text: 'Update successful',
-                    bg: 'secondary',
-                })
-                setTimeout(() => {
-                    setNotice({...notice, text: ''})
-                   
-                    // Router.push(`/add-bio?id=${dta.userId}`);
-                    Router.push({pathname: '/add-bio', query: {id: dta.userId}})
-                }, 3000)
-            })
+          
+          setNotice({...notice, 
+              text: 'Update successful',
+              bg: 'secondary',
+          })
+          setTimeout(() => {
+              setNotice({...notice, text: ''})
+              
+              Router.push({pathname: '/add-bio', query: {id: auth.id}})
+          }, 3000)
+          
                
         } catch(e){
             setDisabled(false)
@@ -176,6 +152,23 @@ export default function AddInfo() {
 //     },
 //   };
 // }
+
+export async function getServerSideProps(context) {
+  const { query, req } = context;
+  const protocol = req.headers['x-forwarded-proto'] || 'http'
+  const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+  const cook =  cookie.parse(req.headers.cookie)
+  const auth  = JSON.parse(cook.auth)
+  let response = await fetch(`${baseUrl}/api/get-about/${auth.id}`);
+  let data = await response.json();
+  return {
+      props: {
+        auth: auth,
+        baseUrl: baseUrl,
+        about: data,
+      },
+  };
+}
 
 const styles = {
   workflow: {

@@ -3,29 +3,22 @@ import { jsx, Box, Container, Image, Text } from 'theme-ui';
 import { Link } from 'components/link';
 import data from './footer.data';
 import FooterLogo from 'assets/logo.png';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {useRouter} from 'next/router';
-export default function Footer() {
+import * as cookie from 'cookie'
+import Cookies from 'js-cookie'
+
+export default function Footer({ auth }) {
   const router = useRouter()
-  const [auth, setAuth] = useState(null)
   const [notice, setNotice] = useState({
     text: '',
     color: '#fff',
     bg: 'orange'
   })
-  useEffect(() => {
-    const cook = localStorage.getItem('auth')
-    if(cook) {
-       const passed = JSON.parse(cook)
-    setAuth(passed)
-    }
-   
-  },[])
 
   const logUser = () => {
     if(auth) {
-      localStorage.clear()
-      
+      Cookies.remove('auth')
       setNotice({...notice, 
         text: 'You have been logged out'})
         setTimeout(() => {
@@ -59,8 +52,9 @@ export default function Footer() {
             </nav>
           </Box>
           <Text sx={styles.footer.copyright}>
-            Copyright by {new Date().getFullYear()} Rural Voices
+            Copyright by {new Date().getFullYear()}
           </Text>
+          <Text sx={{fontWeight: 'bold'}}>-Rural Voices-</Text>
         </Box>
         {notice.text && 
          <Box sx={{
@@ -122,3 +116,17 @@ const styles = {
     },
   },
 };
+export async function getServerSideProps(context) {
+  var auth = null
+  const { req } = context;
+  if(req.headers.cookie) {
+     const cook =  cookie.parse(req.headers.cookie)
+      const dxt  = JSON.parse(cook.auth)
+      auth = dxt
+  }
+  return {
+      props: {
+        auth: auth
+      },
+  };
+}

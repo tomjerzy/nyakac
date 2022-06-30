@@ -3,7 +3,6 @@ const {open} = require('sqlite')
 
 export default async function handler(req, res, next){
     const { id, f_name,l_name, phone, email, ig, fb, twitter } = req.body
-    console.log(req.body)
     try {
         async function openDB() {
             return open({
@@ -24,6 +23,7 @@ export default async function handler(req, res, next){
         }
       
     } catch (e) {
+        console.log(e)
         res.status(400).json({status: 'error', error: 'Error fetching data'})
     }
     

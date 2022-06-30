@@ -7,32 +7,17 @@ import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
 import { useRouter } from 'next/router';
-export default function EditProfile() {
+import * as cookie from 'cookie'
+export default function EditProfile({ user, baseUrl }) {
 
     const router = useRouter()
     const [active, setActive] = useState(true)
-    const [user, setUser] = useState({})
-    //const avatar = require(`assets/${user.avatar}`)
-
     const [disabled, setDisabled] = useState(false)
     const [ notice, setNotice] = useState({
         color: '#ffffff',
         text: '',
         bg: 'secondary'
     })
-    useEffect(() => {
-      const rawAuth = localStorage.getItem('auth')
-      if(rawAuth) {
-        const user = JSON.parse(rawAuth)
-       fetChProfile(user.username)
-      }
-    },[])
-
- const fetChProfile = async (username) => {
-  const userApi = await fetch(`/api/${username}`)
-  const currentUser = await userApi.json();
-  setUser(currentUser)
- }
 
     const updateForm = (e) => {
         try {
@@ -45,10 +30,10 @@ export default function EditProfile() {
         }
     }
 
-    const submitData = (event) => {
+    const submitData = async (event) => {
         event.preventDefault()
         try {
-            fetch('/api/update-user',{
+            const resp = fetch(`${baseUrl}/api/update-user`,{
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -56,20 +41,18 @@ export default function EditProfile() {
                   },
                 body: JSON.stringify(user)
             })
-            .then(resp => resp.json())
-            .then( result =>  {
-              //Cookies.set('auth', JSON.stringify(result.auth));
-                setNotice({...notice, 
-                    text: 'Update successful',
-                    bg: 'secondary',
-                })
-                router.push({pathname: '/'})
-            })
-            
+          const result = await resp.json()
+          Cookies.set('auth', JSON.stringify(result.auth));
+          setNotice({...notice, 
+              text: 'Update successful',
+              bg: 'secondary',
+          })
+          router.push({pathname: '/'}) 
         } catch(e){
+          console.log(e)
             setDisabled(false)
             setNotice({...notice, 
-                text: 'Update failed',
+                text: e.error,
                 bg: 'primary',
         })
         setTimeout(() => {
@@ -251,3 +234,19 @@ const styles = {
     ],
   },
 };
+
+export async function getServerSideProps(context) {
+  const { query, req } = context;
+  const protocol = req.headers['x-forwarded-proto'] || 'http'
+  const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+  const cook =  cookie.parse(req.headers.cookie)
+  const auth  = JSON.parse(cook.auth)
+  let response = await fetch(`${baseUrl}/api/${auth.username}`);
+  let data = await response.json();
+  return {
+      props: {
+          baseUrl: baseUrl,
+          user: data,
+      },
+  };
+}

@@ -1,10 +1,12 @@
+///** @jsx jsx */
 import React, { useState, useEffect } from 'react';
 import {ThemeProvider, Box,Container,Image,Grid,Heading, Text, Flex, Link} from 'theme-ui'
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import theme from 'theme';
 import Layout from 'components/layout';
 import LoginImg from 'assets/login.png';
-
+import Cookies from 'js-cookie'
+import * as cookie from 'cookie'
 /* components */
 
 import FormLogin from '../../components/forms/LoginForm';
@@ -36,13 +38,21 @@ const FORM_DATA_LOGIN = {
   },
 };
 
-export default function Login() {
+export default function Login({ baseUrl, auth }) {
+  const router = useRouter()
+
   useEffect(() => {
-    const user = localStorage.getItem('auth')
-    if(user) {
-      Router.push('/')
+    if(auth) {
+      router.push({pathname: '/profile', query: {username: auth.username}})
     }
-},[])
+  },[])
+    // if(auth) {
+    //   goHome()
+    // }
+
+    // const goHome = () => {
+    //   
+    // }
   const [loading, setLoading] = useState(false);
 
   const [stateFormData, setStateFormData] = useState(FORM_DATA_LOGIN);
@@ -82,7 +92,7 @@ export default function Login() {
       // Call an external API endpoint to get posts.
       // You can use any data fetching library
       setLoading(!loading);
-      const loginApi = await fetch('/api/login', {
+      const loginApi = await fetch(`${baseUrl}/api/login`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -94,11 +104,8 @@ export default function Login() {
       let result = await loginApi.json();
       setStateFormError(result)
       if (result.success && result.token) {
-        //Cookies.set('token', result.token);
-        localStorage.setItem('auth', JSON.stringify(result.auth));
-        // window.location.href = referer ? referer : "/";
-        // const pathUrl = referer ? referer.lastIndexOf("/") : "/";
-        Router.push({pathname: '/profile', query: {username: result.auth.username}});
+        Cookies.set('auth', JSON.stringify(result.auth));
+        router.push({pathname: '/profile', query: {username: result.auth.username}});
       } else {
         setStateFormMessage(result);
       }
@@ -300,3 +307,22 @@ const styles = {
     ],
   },
 };
+
+export async function getServerSideProps(context) {
+  const { req } = context;
+  const protocol = req.headers['x-forwarded-proto'] || 'http'
+  const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+  var auth = null
+  if(req.headers.cookie) {
+     const cook =  cookie.parse(req.headers.cookie)
+      const dxt  = JSON.parse(cook.auth)
+      auth = dxt
+  }
+ 
+  return {
+      props: {
+        baseUrl: baseUrl,
+        auth: auth
+      },
+  };
+}

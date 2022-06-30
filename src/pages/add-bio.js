@@ -7,10 +7,12 @@ import theme from 'theme';
 import Layout from 'components/layout';
 import { } from 'react-icons/fa';
 import Router, { useRouter } from 'next/router';
-export default function AddBio() {
+import * as cookie from 'cookie'
+
+export default function AddBio({baseUrl, bio}) {
  
     const [active, setActive] = useState(false)
-    const [dta, setDta] = useState({})
+    const [dta, setDta] = useState(bio)
     //const avatar = require(`assets/${user.avatar}`)
     const [disabled, setDisabled] = useState(false)
     const [ notice, setNotice] = useState({
@@ -19,20 +21,20 @@ export default function AddBio() {
         bg: 'secondary'
     })
  
-    useEffect(() => {
-        const rawAuth = localStorage.getItem('auth')
-        if(rawAuth) {
-            const jsonAuth = JSON.parse(rawAuth)
-            setDta({...dta, userId: jsonAuth.id, username: jsonAuth.username })
-            fetchBio(jsonAuth.id)
-        }
-    },[])
+    // useEffect(() => {
+    //     const rawAuth = localStorage.getItem('auth')
+    //     if(rawAuth) {
+    //         const jsonAuth = JSON.parse(rawAuth)
+    //         setDta({...dta, userId: jsonAuth.id, username: jsonAuth.username })
+    //         fetchBio(jsonAuth.id)
+    //     }
+    // },[])
 
-    const fetchBio = async (id) => {
-      const userApi = await fetch(`/api/get-bio/${id}`)
-      const about = await userApi.json();
-      setDta(about)
-    }
+    // const fetchBio = async (id) => {
+    //   const userApi = await fetch(`${baseUrl}/api/get-bio/${id}`)
+    //   const about = await userApi.json();
+    //   setDta(about)
+    // }
 
     const updateForm = (e) => {
         try {
@@ -45,10 +47,10 @@ export default function AddBio() {
         }
     }
 
-    const submitData = (event) => {
+    const submitData = async (event) => {
         event.preventDefault()
         try {
-            fetch('/api/edit-bio',{
+           const resp = await fetch(`${baseUrl}/api/edit-bio`,{
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -56,20 +58,17 @@ export default function AddBio() {
                     },
                 body: JSON.stringify(dta)
             })
-            .then( data =>  {
-                setNotice({...notice, 
-                    text: 'Update successful',
-                    bg: 'secondary',
-                })
-                setTimeout(() => {
-                    setNotice({...notice, text: ''})
-                    Router.push('/')
-                  
-                }, 3000)
-            })
-            
            
+          setNotice({...notice, 
+              text: 'Update successful',
+              bg: 'secondary',
+          })
+          setTimeout(() => {
+              setNotice({...notice, text: ''})
+              Router.push('/')
             
+          }, 3000)
+             
         } catch(e){
             setDisabled(false)
             setNotice({...notice, 
@@ -216,3 +215,19 @@ const styles = {
     ],
   },
 };
+
+export async function getServerSideProps(context) {
+  const { query, req } = context;
+  const protocol = req.headers['x-forwarded-proto'] || 'http'
+  const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+  const cook =  cookie.parse(req.headers.cookie)
+  const auth  = JSON.parse(cook.auth)
+  let response = await fetch(`${baseUrl}/api/get-bio/${auth.id}`);
+  let data = await response.json();
+  return {
+      props: {
+        baseUrl: baseUrl,
+        bio: data,
+      },
+  };
+}

@@ -16,7 +16,7 @@ import TestimonialCard from '../sections/testimonial';
 import Contact from '../sections/contact'
 
 import Values from 'components/values'
-export default function Home() {
+export default function Home({ data }) {
   return (
     <ThemeProvider theme={theme}>
         <Layout>
@@ -30,11 +30,24 @@ export default function Home() {
           <CoreFeature />
           <WorkFlow />
           
-          <TeamSection />
+          <TeamSection  data={data}/>
           <TestimonialCard />
           
-          <Contact />
+          <Contact/>
         </Layout>
     </ThemeProvider>
   );
+}
+
+export async function getServerSideProps(context) {
+  const { req } = context;
+  const protocol = req.headers['x-forwarded-proto'] || 'http'
+  const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+  let response = await fetch(`${baseUrl}/api/fetch-users`);
+  let data = await response.json();
+  return {
+      props: {
+         data: data
+      },
+  };
 }

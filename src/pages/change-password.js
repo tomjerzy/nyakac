@@ -1,19 +1,19 @@
 /** @jsx jsx */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { jsx,ThemeProvider,Container,Text, Box, Grid,Image, Heading, Button, Link, Flex, Select} from 'theme-ui';
 import theme from 'theme';
-// import SEO from 'components/seo';
 import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
-import { } from 'react-icons/fa';
 import {useRouter} from 'next/router';
-export default function ChangePass() {
+import * as cookie from 'cookie';
+
+export default function ChangePass({user, baseUrl}) {
     const router = useRouter()
     const [active, setActive] = useState(false)
     const [auth, setAuth] = useState({
-        username: '',
         current: '',
+        id: user.id,
         new: '',
         confirm: ''
     })
@@ -24,19 +24,7 @@ export default function ChangePass() {
         text: '',
         bg: 'secondary'
     })
-
-    useEffect(() => {
-        const cookie = localStorage.getItem('auth')
-        if(cookie) {
-             const dt  = JSON.parse(cookie)
-            setAuth(dt)
-        }
-         
-    },[])
     
-   
- 
-
     const updateForm = (e) => {
         try {
             setAuth({...auth,
@@ -70,7 +58,7 @@ export default function ChangePass() {
                     setNotice({...notice, text: ''})
                 }, 3000)
             } else {
-               const data = await fetch('/api/change-password',{
+               const data = await fetch(`${baseUrl}/api/change-password`,{
                     method: 'POST',
                     mode: 'cors',
                     headers: {
@@ -81,16 +69,16 @@ export default function ChangePass() {
             
                 if(data.status === 200) {
                     setNotice({...notice, 
-                        text: 'Password changed successfully',
+                        text: data.message,
                         bg: 'green',
                     })
                     setTimeout(() => {
                         setNotice({...notice, text: data.message})
-                        router.push({pathname: '/profile', query:{username: auth.username}})
+                        router.push('/')
                     }, 1000)
                 } else if (data.status=== 400) {
                     setNotice({...notice, 
-                        text: "Could not verify credentials",
+                        text: data.error,
                         bg: 'primary',
                     })
                     setTimeout(() => {
@@ -128,7 +116,7 @@ export default function ChangePass() {
             </Box>
             <Box>
                 <Heading as="h5" mb="15px">Change your password</Heading>
-                {auth.username ? 
+               
                 <form onSubmit={submitData}> 
                     <input 
                         placeholder='Enter current password' 
@@ -157,7 +145,7 @@ export default function ChangePass() {
                 
 
             <Button variant="secondary" mb="20px" type="submit" disabled={disabled}>Change password</Button>
-    </form> : <Text>Loading data...</Text>}
+    </form>
                 
         
             </Box>
@@ -232,3 +220,16 @@ const styles = {
     ],
   },
 };
+export async function getServerSideProps(context) {
+    const { query, req } = context;
+    const protocol = req.headers['x-forwarded-proto'] || 'http'
+    const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+    const cook =  cookie.parse(req.headers.cookie)
+    const auth  = JSON.parse(cook.auth)
+    return {
+        props: {
+          user: auth,
+          baseUrl: baseUrl
+        },
+    };
+  }

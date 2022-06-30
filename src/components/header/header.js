@@ -9,18 +9,19 @@ import MobileDrawer from './mobile-drawer';
 import menuItems from './header.data';
 import { useEffect, useState } from 'react';
 import { FaBell } from 'react-icons/fa';
-
-export default function Header({ className }) {
-  const [auth, setAuth] = useState(null)
+import * as cookie from 'cookie'
+export default function Header({ auth, className }) {
+  //const [auth, setAuth] = useState(auth)
  const router = useRouter()
 
-  useEffect(() => {
-    const cook = localStorage.getItem('auth')
-    if(cook) {
-      const passed = JSON.parse(cook)
-    setAuth(passed)
-    }
-  },[])
+  // useEffect(() => {
+  //   const cook = Cookies.get('auth')
+  //   if(cook) {
+  //     const dtx =  cookie.parse(cook)
+  //     const dxt  = JSON.parse(dtx.auth)
+  //   setAuth(dxt)
+  //   }
+  // },[])
 
   return (
     <header sx={styles.header} className={className}>
@@ -139,3 +140,18 @@ const styles = {
     },
   },
 };
+export async function getServerSideProps(context) {
+  const { req } = context;
+  var auth = null
+  if(req.headers.cookie) {
+     const cook =  cookie.parse(req.headers.cookie)
+      const dxt  = JSON.parse(cook.auth)
+      auth = dxt
+  }
+ 
+  return {
+      props: {
+        auth: auth
+      },
+  };
+}
