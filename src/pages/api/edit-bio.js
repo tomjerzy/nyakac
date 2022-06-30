@@ -11,9 +11,7 @@ export default async function handler(req, res){
         }
         const db = await openDB()
         const data = await db.get('SELECT * FROM info WHERE userId = ?',[userId])
-        console.log(req.body)
         if(data) {
-            console.log('found')
             const result = await db.prepare('UPDATE info SET userId = ?, district = ?, sublocation = ?, ward = ?, origin = ?, profession =?, achievements = ?')
             await result.run(userId, district, sublocation, ward, origin, profession, achievements)
             res.json({status: 'success', message: 'done'})
@@ -25,7 +23,6 @@ export default async function handler(req, res){
         }
       
     } catch (e) {
-        console.log(e)
         res.status(400).json({status: 'error', error: 'Error fetching data'})
     }
     

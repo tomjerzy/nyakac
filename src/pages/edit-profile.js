@@ -26,7 +26,7 @@ export default function EditProfile({ user, baseUrl }) {
             }
             )
         } catch(err) {
-            console.log(err)
+            
         }
     }
 
