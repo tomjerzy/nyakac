@@ -12,13 +12,13 @@ export default async function handler(req, res){
         const db = await openDB()
         const data = await db.all('SELECT * FROM user INNER JOIN about ON about.userId = user.id LIMIT 9')
         if(data){
-            res.send(data)
+            res.json(data)
         } else {
-            res.status(400).json({status: 'sucess', message:' No members found'})
+            res.status(400).json([{status: 'sucess', message:' No members found'}])
         }
         
     } catch (e) {
-        res.status(500).json({status: 'error', error: 'Something went wrong'})
+        res.status(500).json([{status: 'error', error: 'Something went wrong'}])
     }
     
 }     

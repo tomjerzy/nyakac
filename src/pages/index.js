@@ -17,6 +17,7 @@ import Contact from '../sections/contact'
 
 import Values from 'components/values'
 export default function Home({ data }) {
+
   return (
     <ThemeProvider theme={theme}>
         <Layout>
