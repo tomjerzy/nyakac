@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "node database.js && next dev",
-    "build": "next build",
+    "build": "node database.js && next build",
     "postbuild": "next-sitemap",
-    "start": "next start"
+    "start": "node database.js && next start"
   },
   "dependencies": {
     "aws-sdk": "^2.1162.0",
