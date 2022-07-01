@@ -4,6 +4,3 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-  
-[context.deploy-preview.environment]
-  NETLIFY_NEXT_PLUGIN_SKIP = true
