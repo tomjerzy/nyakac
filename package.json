@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node database.js && next dev",
-    "build": "node database.js && next build",
+    "build": "node database.js && next build && next export",
     "postbuild": "next-sitemap",
     "start": "node database.js && next start"
   },
