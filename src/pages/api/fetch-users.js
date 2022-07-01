@@ -14,11 +14,11 @@ export default async function handler(req, res){
         if(data){
             res.json(data)
         } else {
-            res.status(400).json([{status: 'sucess', message:' No members found'}])
+            res.status(400).json([])
         }
         
     } catch (e) {
-        res.status(500).json([{status: 'error', error: 'Something went wrong'}])
+        res.status(500).json([])
     }
     
 }     
