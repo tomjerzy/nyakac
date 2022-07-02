@@ -1,7 +1,14 @@
 const sqlite3 = require('sqlite3')
 const {open} = require('sqlite')
-
+// const pgp = require('pg-promise')();
+// const user = process.env.USER
+//         const password = process.env.PASSWORD
+//         const host = process.env.DBHOST
+//         const port = process.env.DBPORT
+//         const database = process.env.DATABASE
+//         const db = pgp(`postgres://${user}:${password}@${host}:${port}/${database}`)
 export default async function handler(req, res){
+        
     try {
         async function openDB() {
             return open({
@@ -18,6 +25,7 @@ export default async function handler(req, res){
         }
         
     } catch (e) {
+        console.log(e)
         res.status(500).json([])
     }
     

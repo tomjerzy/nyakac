@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "node database.js && next dev",
-    "build": "node database.js && next build",
+    "dev": "next dev",
+    "build": "next build",
     "postbuild": "next-sitemap",
-    "start": "node database.js && next start"
+    "start": "next start -p $PORT"
   },
   "dependencies": {
     "aws-sdk": "^2.1162.0",
@@ -25,6 +25,7 @@
     "next-connect": "^0.12.2",
     "next-optimized-images": "^2.5.4",
     "nock": "^13.2.7",
+    "pg-promise": "^10.11.1",
     "prettier": "^2.1.2",
     "rc-drawer": "^4.1.0",
     "react": "16.13.0",
