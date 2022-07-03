@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx,ThemeProvider,Container,Text, Box, Grid,Image, Heading, Button, Link, Flex} from 'theme-ui';
+import { jsx,ThemeProvider,Container,Text, Box, Grid, Heading, Button, Image, Link, Flex} from 'theme-ui';
 import theme from 'theme';
 import Layout from 'components/layout';
 import { FaPhoneAlt,FaMailBulk,FaUserAlt, FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
@@ -9,7 +9,6 @@ const axios = require('axios')
 import {useRouter} from 'next/router'
 import Cookies from 'js-cookie';
 import * as cookie from 'cookie';
-
 export default function Profile({ user, baseUrl, auth }) {
   const router = useRouter()
   const [alert, setAlert] = useState(false)
@@ -41,13 +40,6 @@ export default function Profile({ user, baseUrl, auth }) {
     setMessage({...message, 
     [e.target.name]: e.target.value})
   }
-
-  useEffect(() => {
-    const cook = localStorage.getItem('auth')
-      if(cook) {
-        setAuth(JSON.parse(cook))
-      }
-  },[])
 
   const [message, setMessage] = useState({
     receiver: user.id,
@@ -104,7 +96,7 @@ export default function Profile({ user, baseUrl, auth }) {
           setNotice({...notice, text: ''})
           setFile(null)
         }, 2000)
-        localStorage.clear()
+        Cookies.remove('auth')
         router.push('/user/login')
       } catch (e) {
         setNotice({...notice, 
@@ -166,7 +158,7 @@ export default function Profile({ user, baseUrl, auth }) {
       <Container>
             <Grid sx={styles.grid}>
                 <Box sx={{textAlign: 'center', p: 2, display: 'flex', flexDirection: 'column'}}>
-                  <Image src={fileDataURL ? fileDataURL: user.avatar} sx={styles.image}/>
+                  <Image src={fileDataURL ? fileDataURL: user.avatar} sx={styles.image} />
                   <input type="file" style={{ display: 'none'}} 
                   name="file" accept="image/*" ref={inputRef} onChange={handleFileChange} />
 
@@ -442,17 +434,22 @@ const styles = {
 };
 
 export async function getServerSideProps(context) {
+  var auth = {}
   const { query, req } = context;
   const protocol = req.headers['x-forwarded-proto'] || 'http'
   const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
-  const cook =  cookie?.parse(req.headers.cookie)
-  const auth  = cookie?JSON.parse(cook.auth):null
+  const cook =  req.headers.cookie
+  if(cook) {
+      const cooked =  cookie.parse(req.headers.cookie)
+      auth  = JSON.parse(cooked.auth)
+  } 
   let response = await fetch(`${baseUrl}/api/${query.username}`);
   let data = await response.json();
   return {
       props: {
          auth: auth,
-          user: data,
+         baseUrl: baseUrl,
+        user: data,
       },
   };
 }

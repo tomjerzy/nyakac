@@ -14,7 +14,7 @@ import WorkFlow from '../sections/workflow';
 import TeamSection from '../sections/team-section';
 import TestimonialCard from '../sections/testimonial';
 import Contact from '../sections/contact'
-
+import Landing from '../sections/landing';
 import Values from 'components/values'
 export default function Home({ data }) {
 
@@ -22,6 +22,7 @@ export default function Home({ data }) {
     <ThemeProvider theme={theme}>
         <Layout>
           <SEO title="Rural Voices" />
+          <Landing />
           <Banner />
           <Values />
          <ServiceSection />

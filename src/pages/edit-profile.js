@@ -7,9 +7,11 @@ import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie'
 import * as cookie from 'cookie'
-export default function EditProfile({ user, baseUrl }) {
+export default function EditProfile({ usr, baseUrl }) {
 
+  const [ user, setUser] = useState(usr)
     const router = useRouter()
     const [active, setActive] = useState(true)
     const [disabled, setDisabled] = useState(false)
@@ -33,7 +35,7 @@ export default function EditProfile({ user, baseUrl }) {
     const submitData = async (event) => {
         event.preventDefault()
         try {
-            const resp = fetch(`${baseUrl}/api/update-user`,{
+            const resp = await fetch(`${baseUrl}/api/update-user`,{
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -41,13 +43,16 @@ export default function EditProfile({ user, baseUrl }) {
                   },
                 body: JSON.stringify(user)
             })
-          const result = await resp.json()
-          Cookies.set('auth', JSON.stringify(result.auth));
-          setNotice({...notice, 
-              text: 'Update successful',
-              bg: 'secondary',
-          })
-          router.push({pathname: '/'}) 
+
+            if(resp.status === 200){
+              Cookies.remove('auth');
+              setNotice({...notice, 
+                  text: 'Update successful. Please login again to access content',
+                  bg: 'green',
+              })
+              router.push({pathname: '/user/login'}) 
+            }
+         
         } catch(e){
           console.log(e)
             setDisabled(false)
@@ -246,7 +251,7 @@ export async function getServerSideProps(context) {
   return {
       props: {
           baseUrl: baseUrl,
-          user: data,
+          usr: data,
       },
   };
 }

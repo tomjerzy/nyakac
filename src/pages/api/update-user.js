@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3')
 const {open} = require('sqlite')
 
-export default async function handler(req, res, next){
+export default async function handler(req, res){
     const { id, f_name,l_name, phone, email, ig, fb, twitter } = req.body
     try {
         async function openDB() {
