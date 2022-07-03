@@ -24,12 +24,12 @@ export default function Profile({ user, baseUrl, auth }) {
   const deleteUser = async () => {
     try {
         setAlert(false)
-          await fetch(`${baseUrl}delete-account`, {
+          await fetch(`${baseUrl}/api/delete-account`, {
               method: 'POST',
               body: auth.id
             })
-            Cookies.remove('auth')
-            router.push('/')
+            //Cookies.remove('auth')
+           // router.push('/')
     } catch(e) {
       console.log(e)
     }
@@ -114,7 +114,7 @@ export default function Profile({ user, baseUrl, auth }) {
 
   const sendMessage = (e) => {
     e.preventDefault()
-      fetch('/api/send-message', {
+      fetch(`${baseUrl}/send-message`, {
         method: 'POST',
         mode: 'cors',
         headers: {
