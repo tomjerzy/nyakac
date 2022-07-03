@@ -28,11 +28,21 @@ export default function Profile({ user, baseUrl, auth }) {
               method: 'POST',
               body: auth.id
             })
-            //Cookies.remove('auth')
-           // router.push('/')
+            Cookies.remove('auth')
+           router.push('/')
     } catch(e) {
       console.log(e)
     }
+    
+  }
+
+  const logout = () => {
+    Cookies.remove('auth')
+    setNotice({...notice, 
+      text: 'You have been logged out',
+      bg: 'orange',
+  })
+    router.push('/')
     
   }
 
@@ -300,7 +310,7 @@ export default function Profile({ user, baseUrl, auth }) {
                   <Link sx={styles.link}>Enquiries</Link>
                   <Link sx={styles.link}>Create article</Link>
                   <Link sx={styles.link}>My messages</Link>
-                  <Link sx={styles.link}>Share donation link</Link>
+                  <Link sx={styles.link} onClick={() => logout()}>Log out</Link>
                 </Box>
                 </Grid>
                 

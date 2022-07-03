@@ -41,11 +41,11 @@ const FORM_DATA_LOGIN = {
 export default function Login({ baseUrl, auth }) {
   const router = useRouter()
 
-  useEffect(() => {
-    if(auth) {
-      router.push({pathname: '/profile', query: {username: auth.username}})
-    }
-  },[])
+  // useEffect(() => {
+  //   if(auth) {
+  //     router.push({pathname: '/profile', query: {username: auth.username}})
+  //   }
+  // },[])
     // if(auth) {
     //   goHome()
     // }

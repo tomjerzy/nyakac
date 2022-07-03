@@ -33,7 +33,7 @@ export default function AddInfo({ baseUrl, about, auth}) {
     const submitData = async (event) => {
         event.preventDefault()
         try {
-            const resp = await fetch(`${baseUrl}edit-about`,{
+            const resp = await fetch(`${baseUrl}/api/edit-about`,{
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -54,6 +54,7 @@ export default function AddInfo({ baseUrl, about, auth}) {
           
                
         } catch(e){
+          console.log(e)
             setDisabled(false)
             setNotice({...notice, 
                 text: 'Update failed',
