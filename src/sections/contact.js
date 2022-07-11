@@ -6,6 +6,7 @@ import Phone from 'assets/icons/phone.png'
 import Mail from 'assets/icons/mail.png'
 import Whatsapp from 'assets/icons/whatsapp.png'
 import Pin from 'assets/icons/pin.png'
+import Contact from 'assets/icons/contact.png'
 export default function TeamCard({ src, altText, title, designation, social }) {
   const [disabled, setDisabled] = useState(false)
   const [notice, setNotice] = useState({
@@ -23,7 +24,7 @@ export default function TeamCard({ src, altText, title, designation, social }) {
   const items = [
     { path: 'mailto:info@rural-voices.org',text: 'info@rural-voices.org', icon: Mail},
     { path: 'tel:+254740450967',text:'+254740450967', icon: Phone},
-    { path: 'tel:+254739105140',text:'+254739105140', icon: Whatsapp},
+    { path: 'https://wa.me/+254739105140',text:'+254739105140', icon: Whatsapp},
     { path: 'www.maps.google.com', text: 'Nyakach sub county', icon: Pin}
     
   ]
@@ -73,6 +74,7 @@ export default function TeamCard({ src, altText, title, designation, social }) {
       <Container sx={{backgroundColor: '#e5e4e2', borderRadius: 5}} py="30px">
                     <Grid sx={styles.grid} mb="30px">
                       <Box>
+                        <Image src={Contact}/>
                       <Heading variant="heroPrimary" as="h4">
                         Contact Us
                       </Heading>
