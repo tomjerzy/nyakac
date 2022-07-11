@@ -31,20 +31,20 @@ const data = [
     title: 'Strategy Implementation',
     text:
       `The most important part of implementing a strategy may be communicating it clearly to begin with. 
-      The entire company should be engaged and made aware of the company’s long-term vision. Each individual 
-      should understand how their role contributes to the bigger picture. Once everyone in the organization — and 
+      Our entire organization is engaged and made aware of the long-term vision. Each individual 
+       understands how their role contributes to the bigger picture. Once everyone in the organization — and 
       in particular, stakeholders and owners of specific action items — are aligned, it’s time for “a little less 
       conversation, a little more action.” All the steps
-      outlined during the strategy formulation process should be put into motion during strategy implementation.`,
+      outlined during the strategy formulation process are put into motion during strategy implementation.`,
   },
   {
     id: 4,
     title: 'Strategy Evaluation',
     text:
-      `Every organization should strive for continuous improvement, and so part of the strategic 
+      `We strive for continuous improvement, and so part of the strategic 
       planning process is taking a moment to monitor and adjust as needed. By implementing checkpoints 
-      into your overall plan, business leaders can identify what’s working and what’s not, and pivot 
-      accordingly. Strategy evaluation involves setting and adjusting benchmarks as needed, gathering 
+      into our overall plan, our leaders can identify what’s working and what’s not, and pivot 
+      accordingly. We use this strategy to set and adjust benchmarks as needed, gathering 
       feedback and measuring performance. The results of strategy evaluation can help establish best 
       practices and inform 
       future strategies.`,
