@@ -4,7 +4,7 @@ import { Text, Heading, Image, Box, Link, Button } from 'theme-ui';
 import router from 'next/router';
 import { useState } from 'react';
 
-export default function TeamCard({ src, altText, title, designation, social, username }) {
+export default function TeamCard({ src, altText, title, designation, social, about }) {
   return (
     <Box sx={styles.card}>
       <Image src={src} alt={altText} sx={styles.memberThumb}/>
@@ -15,6 +15,10 @@ export default function TeamCard({ src, altText, title, designation, social, use
         <Text className="info__designation" sx={styles.infoWrapper.designation}>
           {designation}
         </Text>
+        <hr/>
+        <Text className="info__designation" sx={styles.infoWrapper.designation}>
+          {about}
+        </Text>
       </Box>
       <Box sx={styles.socialShare} className="social__share" my={3}>
         {social.map((item) => (
@@ -23,9 +27,9 @@ export default function TeamCard({ src, altText, title, designation, social, use
           </Link>
         ))}
       </Box>
-      <Button onClick={() => router.push({pathname: '/profile', query: {username: username}})} 
+      {/* <Button onClick={() => router.push({pathname: '/profile', query: {username: username}})} 
       className="donate_btn" 
-      variant="secondary" aria-label="Donate">Profile</Button>
+      variant="secondary" aria-label="Donate">Profile</Button> */}
     </Box>
   );
 }

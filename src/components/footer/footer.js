@@ -47,7 +47,7 @@ export default function Footer({ auth }) {
 
                 </Link>
               ))}
-              <Link label={auth ? 'Logout' : 'Login'} sx={styles.footer.link} onClick={logUser}/>
+              {/* <Link label={auth ? 'Logout' : 'Login'} sx={styles.footer.link} onClick={logUser}/> */}
              
             </nav>
           </Box>

@@ -23,6 +23,7 @@ export default function TeamSection({ data }) {
             title={ item.f_name +' '+item.l_name}
             username={item.username}
             designation={item.title}
+            about={item.about}
             id={item.id}
             social={[
               {path: item.fb, name: 'Facebook', icon: <FaFacebookF />},
@@ -45,7 +46,7 @@ const styles = {
       null,
       'repeat(2,1fr)',
       null,
-      'repeat(3,1fr)',
+      'repeat(2,1fr)',
     ],
   },
 };
