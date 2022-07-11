@@ -1,13 +1,17 @@
 /** @jsx jsx */
 import { jsx, Container, Box, Image} from 'theme-ui';
-import BannerImg from 'assets/landinglogo.png';
-export default function Banner() {
+import Banner from 'assets/landinglogo.png';
+import BannerImg from 'assets/youthBg.jpg';
+export default function Landing() {
   return (
     <section sx={styles.banner} id="landing">
       <Container sx={styles.banner.container}>
         <Box sx={styles.banner.contentBox}>
-            <Image src={BannerImg} />
+            <Image src={Banner} />
         </Box>
+          <Box sx={styles.banner.imageBox}>
+              <Image src={BannerImg} sx={{ borderRadius: 10}}/>
+          </Box>
       </Container>
     </section>
   );
@@ -16,7 +20,6 @@ export default function Banner() {
 const styles = {
   banner: {
     backgroundColor: '#E6E6FA',
-    height: '60vh',
     pt: ['140px', '145px', '155px', '170px', null, null, '180px', '215px'],
     pb: [2, null, 0, null, 2, 0, null, 5],
     position: 'relative',

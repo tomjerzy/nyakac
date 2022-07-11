@@ -19,7 +19,8 @@ export default function TeamCard({ src, altText, title, designation, social }) {
   })
   const items = [
     { path: 'mailto:contact@youngchange.com',text: 'contact@nyakachyouth.com', icon: <FaMailBulk/>},
-    { path: 'tel:+254713635173',text:'+254713635173', icon: <FaPhoneAlt />},
+    { path: 'tel:+254740450967',text:'+254740450967', icon: <FaPhoneAlt />},
+    { path: 'tel:+254739105140',text:'+254739105140', icon: <FaPhoneAlt />},
     { path: 'www.maps.google.com', text: 'Nyakach sub county', icon: <FaMapPin />}
     
   ]

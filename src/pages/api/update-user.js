@@ -1,22 +1,10 @@
-const sqlite3 = require('sqlite3')
-const {open} = require('sqlite')
-
-export default async function handler(req, res){
+import client from '../../../db/db'
+export default async function (req, res){
     const { id, f_name,l_name, phone, email, ig, fb, twitter } = req.body
     try {
-        async function openDB() {
-            return open({
-                filename: './mydb.sqlite',
-                driver: sqlite3.Database
-            })
-        }
-        const db = await openDB()
-        const data = await db.get('SELECT * FROM user WHERE id = ?',[id])
-       
-        if(data) {
-               
-        const result = await db.prepare('UPDATE user SET f_name = ?, l_name=?, phone = ?, email =?, ig=?,fb=?,twitter=? WHERE id = ?')
-        await result.run([f_name,l_name,phone, email,ig,fb,twitter, id])
+        const data = await client.query('SELECT * FROM "User" WHERE "User"."id" = $1',[id])
+        if(data.rows) {     
+        const result = await client.query('UPDATE "User" SET "f_name" = $1, "l_name"=$2, "phone" = $3, "email" = $4, "ig"=$5,"fb"=$6,"twitter"=$7 WHERE "User"."id" = $8',[f_name,l_name,phone, email,ig,fb,twitter, id])
         res.json({status: 'success', message: 'done'}) 
         } else {
             res.status(400).json({status: 'error', message: 'User not found'})
@@ -25,6 +13,8 @@ export default async function handler(req, res){
     } catch (e) {
         console.log(e)
         res.status(400).json({status: 'error', error: 'Error fetching data'})
+    } finally {
+        await client.end()
     }
     
 }     

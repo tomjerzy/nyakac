@@ -20,7 +20,7 @@ export default function TeamSection({ data }) {
             key={item.id}
             src={item.avatar}
             altText={item.f_name}
-            title={ item.f_name + item.l_name}
+            title={ item.f_name +' '+item.l_name}
             username={item.username}
             designation={item.title}
             id={item.id}

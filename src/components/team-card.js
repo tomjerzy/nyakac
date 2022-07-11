@@ -2,6 +2,8 @@
 import { jsx } from 'theme-ui';
 import { Text, Heading, Image, Box, Link, Button } from 'theme-ui';
 import router from 'next/router';
+import { useState } from 'react';
+
 export default function TeamCard({ src, altText, title, designation, social, username }) {
   return (
     <Box sx={styles.card}>
@@ -60,6 +62,7 @@ const styles = {
     width: ['70px', '80px', '100px', null, null, '130px'],
     height: ['70px', '80px', '100px', null, null, '130px'],
     flexShrink: 0,
+    padding: '5px',
     border: '2px solid',
     borderColor: 'primary',
     borderRadius: '50%',

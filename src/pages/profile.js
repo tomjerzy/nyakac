@@ -10,6 +10,7 @@ import {useRouter} from 'next/router'
 import Cookies from 'js-cookie';
 import * as cookie from 'cookie';
 export default function Profile({ user, baseUrl, auth }) {
+  const [Source, setSrc] = useState(user.avatar)
   const router = useRouter()
   const [alert, setAlert] = useState(false)
   const inputRef = useRef(null)
@@ -168,11 +169,11 @@ export default function Profile({ user, baseUrl, auth }) {
       <Container>
             <Grid sx={styles.grid}>
                 <Box sx={{textAlign: 'center', p: 2, display: 'flex', flexDirection: 'column'}}>
-                  <Image src={fileDataURL ? fileDataURL: user.avatar} sx={styles.image} />
+                  <Image src={fileDataURL ? fileDataURL: user.avatar} sx={styles.image}/>
                   <input type="file" style={{ display: 'none'}} 
                   name="file" accept="image/*" ref={inputRef} onChange={handleFileChange} />
 
-                 {user.id == auth.id &&
+                 {user.username == auth.username &&
                  <Button onClick={handleClick} my={3}>Edit avatar</Button>
                  }
                       
@@ -190,22 +191,7 @@ export default function Profile({ user, baseUrl, auth }) {
                 <Heading as="h1" sx={styles.title} my={2}>
                   {user.f_name} {user.l_name}
                 </Heading>
-                
-                <Flex>
-                  <FaMailBulk/>
-                  <Text ml="5px">{user.email}</Text>
-                </Flex>
-                <Flex>
-                  <FaUserAlt/>
-                  <Text ml="5px">{user.username}</Text>
-                </Flex>
-                {user.phone && (
-
-                   <Flex>
-                  <FaPhoneAlt/>
-                  <Text ml="5px">0{user.phone}</Text>
-                </Flex>
-                )}
+            
                
                 
                   <Flex color="primary" p={2} m={3}>
@@ -246,6 +232,7 @@ export default function Profile({ user, baseUrl, auth }) {
                   </Heading>
                   <Text>{user.education}</Text>
                 </Box>
+                
               </div>
             
                 
@@ -256,7 +243,11 @@ export default function Profile({ user, baseUrl, auth }) {
                   </Heading>
                   <Text>{user.profession}</Text>
                 </Box>
-                
+                {user.username === auth.username && (
+                  <Button onClick={() => router.push('/add-about')} 
+                  className="donate_btn" variant="secondary" >Edit About</Button>
+                )}
+               
               </section>
               
               <Box mb={3}>
@@ -270,10 +261,13 @@ export default function Profile({ user, baseUrl, auth }) {
                   <Heading as="h2">Achievements</Heading>
                   <Text>{user.achievements}</Text>
                 </Box>
-                
+                {user.username === auth.username && (
+                <Button onClick={() => router.push('/add-bio')} 
+                className="donate_btn" variant="secondary" >Edit Location details</Button>
+                )}
                 </div>
                 
-                {auth.id !== user.id &&
+                {auth.username !== user.username &&
                 <Box>
                   <hr/>
                    <Heading>Leave a message to {user.f_name}</Heading>
@@ -292,7 +286,7 @@ export default function Profile({ user, baseUrl, auth }) {
       }
               </Box>
             </Grid>
-            {auth.id == user.id &&
+            {auth.username == user.username &&
             <section>
                 <Grid sx={styles.grid}>
                 <Box sx={styles.card}>
@@ -444,7 +438,7 @@ const styles = {
 };
 
 export async function getServerSideProps(context) {
-  var auth = {}
+  var auth = {username: ''};
   const { query, req } = context;
   const protocol = req.headers['x-forwarded-proto'] || 'http'
   const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
@@ -459,7 +453,7 @@ export async function getServerSideProps(context) {
       props: {
          auth: auth,
          baseUrl: baseUrl,
-        user: data,
+         user: data,
       },
   };
 }

@@ -1,20 +1,10 @@
-const sqlite3 = require('sqlite3')
-const {open} = require('sqlite')
+import client from '../../../db/db'
 export default async function handler(req, res){
     const { confirm, current, id} = req.body
-    console.log(req.body)
     try {
-        async function openDB() {
-            return open({
-                filename: './mydb.sqlite',
-                driver: sqlite3.Database
-            })
-        }
-        const db = await openDB()
-        const user = await db.get('SELECT * FROM user WHERE id = ? AND password = ?',[id, current])
-        if(user) {
-            const result = await db.prepare('UPDATE user SET password = ? WHERE id = ?')
-            await result.run(confirm, id)
+        const user = await client.query('SELECT * FROM "User" WHERE "User"."id" = $1 AND "User"."password" = $2',[id, current])
+        if(user.rows) {
+            await client.query('UPDATE "User" SET "password" = $1 WHERE "User"."id" = $2', [confirm, id])
             res.json({status: 'success', message: 'Password changed successfully'})
         } else {
             res.status(400).json({status: 'error', error: 'Incorrect credentials'})
@@ -23,7 +13,8 @@ export default async function handler(req, res){
     } catch (e) {
         console.log(e)
         res.status(400).json({status: 'error', error: 'Error changing password'})
-    }
+    } finally 
+    { await client.end()}
     
 }     
 

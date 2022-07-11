@@ -1,27 +1,19 @@
-const sqlite3 = require('sqlite3')
-const {open} = require('sqlite')
+import client from '../../../db/db'
 export default async function handler(req, res){
     const { username } = req.query
     try {
-        async function openDB() {
-            return open({
-                filename: './mydb.sqlite',
-                driver: sqlite3.Database
-            })
-        }
-        const db = await openDB()
-        const data = await db.get('SELECT * FROM user JOIN about ON about.userId = user.id JOIN info ON info.userId = user.id WHERE username = ?',[username])
+        const data = await client.query('SELECT * FROM "User" JOIN "About" ON "About"."userId" = "User"."id" JOIN "Info" ON "Info"."userId" = "User"."id"  WHERE "User"."username" = $1',[username])
         if(!data) {
             res.status(400).json({status: 'error', error: 'User not found'})
         } else {
-             res.json(data) 
+             res.send(data.rows[0]) 
         }
       
     } catch (e) {
         res.status(400).json({status: 'error', error: 'Error fetching user'})
+    } finally {
+        await client.end()
     }
     
-}     
-
-
+}
 

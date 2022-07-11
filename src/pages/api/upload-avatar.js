@@ -1,14 +1,37 @@
-const sqlite3 = require('sqlite3')
-const {open} = require('sqlite')
 const multer = require('multer');
+import client from '../../../db/db'
 import nextConnect from 'next-connect';
+const aws = require('aws-sdk');
+// aws.config.update({
+//   accessKeyId: 'AKIAJTPPQZOH22ZRQPIQ',
+//   secretAccessKey: '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',
+//   region : 'eu-west-3',
+// });
+// const multerS3 = require('multer-s3')
+// const s3 = new aws.S3();
+const s3 = new aws.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+})
+
 const upload = multer({
     storage: multer.diskStorage({
-      destination: 'public',
+      destination: 'public/images',
       filename: (req, file, cb) => cb(null,  Date.now() + '.'+file.originalname.split('.').pop()),
     }),
   });
-
+// const upload = multer({
+//   storage: multerS3({
+//     s3: s3,
+//     bucket: 'hemaco',
+//     contentType: multerS3.AUTO_CONTENT_TYPE,
+//     ContentDisposition:  'inline',
+//     key: function (req, file, cb) {
+//     	var newFileName = Date.now() + "-" + file.originalname;
+//     	cb(null, newFileName);
+//     }
+//   })
+// });
   const apiRoute = nextConnect({
     onError(error, req, res) {
       res.status(501).json({ error: `Sorry something Happened! ${error.message}` });
@@ -19,18 +42,18 @@ const upload = multer({
   });
   
   apiRoute.use(upload.single('file'));
-  async function openDB() {
-    return open({
-        filename: './mydb.sqlite',
-        driver: sqlite3.Database
-    })
-}
   apiRoute.post(async(req, res) => {
+    //const imagePath = req.files[0].path
+    //const blob = fs.readFileSync(imagePath)
     const { id } = req.body
-    const db = await openDB()
-    const dat = await db.get('SELECT * FROM user WHERE id = ?',[id])
-    const result = await db.prepare('UPDATE user SET avatar = ? WHERE id = ?')
-    await result.run(req.file.filename, id)
+    console.log(req.files)
+    // const uploadedImage = await s3.upload({
+    //   Bucket: process.env.AWS_S3_BUCKET_NAME,
+    //   Key: req.files[0].originalFilename,
+    //   Body: blob,
+    // }).promise()
+    //uploadedImage.Location
+    await client.query('UPDATE "User" SET "avatar" = $1 WHERE "User"."id" = $2',[`images/${req.file.filename}`, id])
     res.status(200).json({ data: 'success' });
   });
   
@@ -40,43 +63,6 @@ const upload = multer({
     api: {
       bodyParser: false, // Disallow body parsing, consume as stream
     },
-  };
-
-// export default async function handler(req, res){
-//     ///const { id } = req.body
-//     console.log(req.files)
-//     try {
-//         async function openDB() {
-//             return open({
-//                 filename: './mydb.sqlite',
-//                 driver: sqlite3.Database
-//             })
-//         }
-//         const db = await openDB()
-//         const data = await db.get('SELECT * FROM user WHERE id = ?',[id])
-       
-//         if(data) {
-//             upload.single('file')(req, res, function(err) {
-//                 if(err) {
-//                     console.log(err)
-//                     res.status(500).json({status: 'error', error:' Could not update avatar'})
-//                 } else {
-//                     //const result = await db.prepare('UPDATE user SET avatar = ? WHERE id = ?')
-//                     //await result.run(req.file.filename, id)
-//                     res.json({status: 'success', message: 'done'})
-//                 }
-//             })
-          
-//         } else {
-            
-//             res.status(400).json({status: 'error', message: 'User not found'})
-//         }
-      
-//     } catch (e) {
-//         console.log(e)
-//         res.status(400).json({status: 'error', error: 'Error fetching data'})
-//     }
-    
-// }     
+  };   
 
 
