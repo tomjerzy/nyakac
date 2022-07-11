@@ -36,7 +36,7 @@ export default function TeamSection() {
       avatar: MaleAvatar,
       name: 'Ochola Komuono',
       title: 'Education coordinator',
-      about: 'A teacher and Sexual Reproductive Health adn Rights(SRHR) Advocate. ',
+      about: 'A teacher and Sexual Reproductive Health and Rights(SRHR) Advocate. ',
       social:[
               {path: 'https://facebook.com/Richard', name: 'Facebook', icon: <FaFacebookF />},
               {path: 'https://instagram.com', name: 'Instagram', icon: <FaInstagram />},
