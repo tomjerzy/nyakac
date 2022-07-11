@@ -2,7 +2,10 @@
 import React, { useState } from 'react';
 import { Heading, Image, Box, Link, Container, jsx,Grid,Input,Button,IconButton,Flex, Text} from 'theme-ui';
 import { FaPhoneAlt,FaMailBulk,FaMapPin } from 'react-icons/fa';
-
+import Phone from 'assets/icons/phone.png'
+import Mail from 'assets/icons/mail.png'
+import Whatsapp from 'assets/icons/whatsapp.png'
+import Pin from 'assets/icons/pin.png'
 export default function TeamCard({ src, altText, title, designation, social }) {
   const [disabled, setDisabled] = useState(false)
   const [notice, setNotice] = useState({
@@ -18,10 +21,10 @@ export default function TeamCard({ src, altText, title, designation, social }) {
     messages: ''
   })
   const items = [
-    { path: 'mailto:contact@youngchange.com',text: 'contact@nyakachyouth.com', icon: <FaMailBulk/>},
-    { path: 'tel:+254740450967',text:'+254740450967', icon: <FaPhoneAlt />},
-    { path: 'tel:+254739105140',text:'+254739105140', icon: <FaPhoneAlt />},
-    { path: 'www.maps.google.com', text: 'Nyakach sub county', icon: <FaMapPin />}
+    { path: 'mailto:info@rural-voices.org',text: 'info@rural-voices.org', icon: Mail},
+    { path: 'tel:+254740450967',text:'+254740450967', icon: Phone},
+    { path: 'tel:+254739105140',text:'+254739105140', icon: Whatsapp},
+    { path: 'www.maps.google.com', text: 'Nyakach sub county', icon: Pin}
     
   ]
 
@@ -75,15 +78,12 @@ export default function TeamCard({ src, altText, title, designation, social }) {
                       </Heading>
                       <Text sx={{color: 'grey'}}>Need to get in touch? Either fill the form or use below contact details to reach us</Text>
                         {items.map((item) => (
-                          <Flex key={item.path}>
-                            <Link href={item.path} sx={styles.link}>
-                                <IconButton aria-label="list icon" mr="20px" sx={{ color: 'primary'}}>
-                                {item.icon}
-                              </IconButton>
-                              {item.text}
+                          <Flex key={item.path} m={2}>
+                              <Image src={item.icon} sx={{height: '35px'}} />
+                              <Link href={item.path} sx={styles.link}>
+                              <Heading>{item.text}</Heading>  
                             </Link>
-                         
-                            </Flex>
+                          </Flex>
                         ))}
                    
                       </Box>
@@ -135,7 +135,7 @@ export default function TeamCard({ src, altText, title, designation, social }) {
 
 const styles = {
   input: {
-    backgroundColor: '#cecece',
+    backgroundColor: '#E6E6FA',
     border: 'none',
     width: '100%',
     padding: 10,
@@ -153,6 +153,8 @@ const styles = {
       'repeat(2,1fr)',
     ]
   },
+  
+  
   link: {
     fontSize: [1, '15px'],
     color: 'text',
