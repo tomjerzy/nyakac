@@ -7,6 +7,7 @@ import Mail from 'assets/icons/mail.png'
 import Whatsapp from 'assets/icons/whatsapp.png'
 import Pin from 'assets/icons/pin.png'
 import Contact from 'assets/icons/contact.png'
+import Typing from 'assets/icons/typing.png'
 export default function TeamCard({ src, altText, title, designation, social }) {
   const [disabled, setDisabled] = useState(false)
   const [notice, setNotice] = useState({
@@ -71,14 +72,14 @@ export default function TeamCard({ src, altText, title, designation, social }) {
   }
   return (
     <section id="contact">
-      <Container sx={{backgroundColor: '#e5e4e2', borderRadius: 5}} py="30px">
+      <Container sx={{backgroundColor: '#E6E6FA', borderRadius: 5}} py="30px">
                     <Grid sx={styles.grid} mb="30px">
                       <Box>
                         <Image src={Contact}/>
                       <Heading variant="heroPrimary" as="h4">
                         Contact Us
                       </Heading>
-                      <Text sx={{color: 'grey'}}>Need to get in touch? Either fill the form or use below contact details to reach us</Text>
+                     
                         {items.map((item) => (
                           <Flex key={item.path} m={2}>
                               <Image src={item.icon} sx={{height: '35px'}} />
@@ -90,6 +91,12 @@ export default function TeamCard({ src, altText, title, designation, social }) {
                    
                       </Box>
                       <Box>
+                      <Box>
+                        <Image src={Typing}/>
+                      <Heading variant="heroPrimary" as="h4">
+                        Write to us...
+                      </Heading>
+                      </Box>
                           <Flex>
                             <input  required
                               placeholder='First name' 
@@ -137,7 +144,7 @@ export default function TeamCard({ src, altText, title, designation, social }) {
 
 const styles = {
   input: {
-    backgroundColor: '#E6E6FA',
+    backgroundColor: '#fff',
     border: 'none',
     width: '100%',
     padding: 10,
