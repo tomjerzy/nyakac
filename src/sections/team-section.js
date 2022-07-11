@@ -69,7 +69,7 @@ export default function TeamSection() {
       avatar: MaleAvatar,
       name: 'Tom Owuor',
       title: 'Technical consultant',
-      about: 'Tom possesses a degree in Real Estate from the university of Nairobi and a certification in Telecomunication from CISCO. Tom is currently a real estate consultant with a private company in Nairobi. He is also actively involved in freelance IT consultations',
+      about: 'Tom possesses a degree in Real Estate from the university of Nairobi and a certification in Telecommunication from CISCO. Tom is currently a real estate consultant with a private company in Nairobi. He is also actively involved in freelance IT consultations',
       social:[
               {path: 'https://facebook.com/Tom Owuor Otema', name: 'Facebook', icon: <FaFacebookF />},
               {path: 'https://instagram.com', name: 'Instagram', icon: <FaInstagram />},
