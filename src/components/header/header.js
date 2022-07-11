@@ -7,10 +7,10 @@ import Logo from 'components/logo';
 import LogoDark from 'assets/logo.png';
 import MobileDrawer from './mobile-drawer';
 import menuItems from './header.data';
-import { useEffect, useState } from 'react';
+
 import { FaBell } from 'react-icons/fa';
-import * as cookie from 'cookie'
-export default function Header({ auth, className }) {
+
+export default function Header({ className }) {
  const router = useRouter()
 
   return (
@@ -33,21 +33,7 @@ export default function Header({ auth, className }) {
           ))}
           
         </Flex>
-        {auth &&
-          <Flex>
-           <Link sx={{cursor: 'pointer'}} onClick={() => router.push({pathname: '/profile', query:{username: auth.username}})}>
-            <Image src={auth.avatar} sx={styles.image}/>
-            </Link> 
-            <Link  sx={{cursor: 'pointer'}} onClick={() => alert('No notifications')} to={'/'}>
-              <FaBell size={25}/>
-            </Link>
-          </Flex>
-        }
-        {/* <Link href="/donate">
-          <Button className="donate_btn" variant="secondary" aria-label="Donate">
-          Donate
-        </Button>
-        </Link> */}
+    
         
         <MobileDrawer/>
       </Container>
@@ -130,18 +116,3 @@ const styles = {
     },
   },
 };
-export async function getServerSideProps(context) {
-  const { req } = context;
-  let auth;
-  if(req.headers.cookie) {
-     const cook =  cookie.parse(req.headers.cookie)
-      const dxt  = JSON.parse(cook.auth)
-      auth = dxt
-  }
- 
-  return {
-      props: {
-        auth: auth
-      },
-  };
-}

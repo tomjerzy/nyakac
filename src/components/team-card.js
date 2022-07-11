@@ -1,21 +1,25 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui';
-import { Text, Heading, Image, Box, Link, Button } from 'theme-ui';
+import { Text, Heading, Image, Box, Link, Grid } from 'theme-ui';
 import router from 'next/router';
 import { useState } from 'react';
 
 export default function TeamCard({ src, altText, title, designation, social, about }) {
   return (
     <Box sx={styles.card}>
-      <Image src={src} alt={altText} sx={styles.memberThumb}/>
-      <Box sx={styles.infoWrapper}>
-        <Heading className="info__name" sx={styles.infoWrapper}>
+      <Grid sx={styles.grid}>
+        <Box>
+        <Image src={src} alt={altText} sx={styles.memberThumb}/>
+        <Heading className="info__name">
           {title}
         </Heading>
         <Text className="info__designation" sx={styles.infoWrapper.designation}>
           {designation}
         </Text>
-        <hr/>
+        
+        </Box>
+      <Box>
+         <Box sx={styles.infoWrapper}>
         <Text className="info__designation" sx={styles.infoWrapper.designation}>
           {about}
         </Text>
@@ -27,6 +31,10 @@ export default function TeamCard({ src, altText, title, designation, social, abo
           </Link>
         ))}
       </Box>
+      </Box>
+      </Grid>
+      
+     
       {/* <Button onClick={() => router.push({pathname: '/profile', query: {username: username}})} 
       className="donate_btn" 
       variant="secondary" aria-label="Donate">Profile</Button> */}
@@ -114,4 +122,17 @@ const styles = {
       },
     },
   },
+  grid: {
+    mt: [0, null, -6, null, -4],
+    gridGap: ['35px 0px', null, 0, null, null, '30px 35px'],
+    gridTemplateColumns: [
+      'repeat(1,1fr)',
+      null,
+      'repeat(2,1fr)',
+      null,
+      'repeat(2,1fr)',
+    ],
+  },
 };
+
+

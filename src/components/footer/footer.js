@@ -5,10 +5,9 @@ import data from './footer.data';
 import FooterLogo from 'assets/logo.png';
 import { useState } from 'react';
 import {useRouter} from 'next/router';
-import * as cookie from 'cookie'
-import Cookies from 'js-cookie'
 
-export default function Footer({ auth }) {
+
+export default function Footer() {
   const router = useRouter()
   const [notice, setNotice] = useState({
     text: '',
@@ -116,17 +115,3 @@ const styles = {
     },
   },
 };
-export async function getServerSideProps(context) {
-  var auth = null
-  const { req } = context;
-  if(req.headers.cookie) {
-     const cook =  cookie.parse(req.headers.cookie)
-      const dxt  = JSON.parse(cook.auth)
-      auth = dxt
-  }
-  return {
-      props: {
-        auth: auth
-      },
-  };
-}

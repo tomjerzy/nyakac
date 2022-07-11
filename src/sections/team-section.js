@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui';
-import { Container, Grid} from 'theme-ui';
+import { Container, Box} from 'theme-ui';
 import SectionHeader from 'components/section-header';
 import TeamCard from 'components/team-card';
 import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa';
@@ -8,6 +8,7 @@ import RichardAvatar from 'assets/1657526510863.jpg'
 import CyndyAvatar from 'assets/1657532914389.jpeg'
 import MaleAvatar from 'assets/male.png'
 import FemaleAvatar from 'assets/woman.png'
+import ObangeAvatar from 'assets/obange.jpeg'
 export default function TeamSection() {
   const data = [
     { id: 1,
@@ -38,7 +39,7 @@ export default function TeamSection() {
       title: 'Education coordinator',
       about: 'A teacher and Sexual Reproductive Health and Rights(SRHR) Advocate. ',
       social:[
-              {path: 'https://facebook.com/Richard', name: 'Facebook', icon: <FaFacebookF />},
+              {path: 'https://facebook.com/', name: 'Facebook', icon: <FaFacebookF />},
               {path: 'https://instagram.com', name: 'Instagram', icon: <FaInstagram />},
               {path: 'https://twitter.com', name: 'Twitter', icon: <FaTwitter />}
       ]
@@ -60,12 +61,23 @@ export default function TeamSection() {
       title: 'Environmental Specialist',
       about: 'Mr,Akumu Felix- I am and environmental professional experienced in project management, Monitoring and Evaluation and Natural resource management in the development sector. I previously worked for UN Environment, GIZ and Stockholm Environment Institute( Africa Centre). Felix holds a bachelors degree in Environmental studies from Kenyatta University, A Post graduate Diploma in Project Management from KIM and currently pursuing international joint masters degree(Msc) in Environmental science at IHE Delft, Netherlands.',
       social:[
-              {path: 'https://facebook.com/Richard', name: 'Facebook', icon: <FaFacebookF />},
+              {path: 'https://facebook.com/', name: 'Facebook', icon: <FaFacebookF />},
               {path: 'https://instagram.com', name: 'Instagram', icon: <FaInstagram />},
               {path: 'https://twitter.com', name: 'Twitter', icon: <FaTwitter />}
       ]
     },
     { id: 6,
+      avatar: ObangeAvatar,
+      name: 'Jane Alma',
+      title: 'Assistant Education Coordinator',
+      about: 'Jane Alma is a young an  ambitious lady  who is naturally and a trained educator. I hold a Bachelor of degree in special needs education specializing in sign language. My skill and experience in sign language have always earned me a chance of working with NACC. Besides this I am also an experienced researcher who understands a lot when it comes to the challenges that every society is facing.  Jane is also a professional writer with extensive knowledge, skills and experienced in executing different articles. My articles are always of exceptional high quality, original and unique. I trust and believe that through my articles my society will experience a great change..',
+      social:[
+              {path: 'https://facebook.com/', name: 'Facebook', icon: <FaFacebookF />},
+              {path: 'https://instagram.com', name: 'Instagram', icon: <FaInstagram />},
+              {path: 'https://twitter.com', name: 'Twitter', icon: <FaTwitter />}
+      ]
+    },
+    { id: 7,
       avatar: MaleAvatar,
       name: 'Tom Owuor',
       title: 'Technical consultant',
@@ -84,7 +96,7 @@ export default function TeamSection() {
         <SectionHeader
         slogan="our team"
         title="The most qualified and talented individuals"/>
-        <Grid sx={styles.grid}>
+        <Box sx={{textAlign: 'center'}}>
           {data.map((item) => (
            
             <TeamCard
@@ -97,22 +109,8 @@ export default function TeamSection() {
             id={item.id}
             social={item.social}/>
           ))}
-        </Grid>
+        </Box>
       </Container>
     </section>
   );
 }
-
-const styles = {
-  grid: {
-    mt: [0, null, -6, null, -4],
-    gridGap: ['35px 0px', null, 0, null, null, '30px 35px'],
-    gridTemplateColumns: [
-      'repeat(1,1fr)',
-      null,
-      'repeat(1,1fr)',
-      null,
-      'repeat(2,1fr)',
-    ],
-  },
-};
