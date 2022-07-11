@@ -83,10 +83,10 @@ const styles = {
       mb: 1,
     },
     designation: {
-      fontSize: ['14px', null, null, 2],
+      fontSize: ['16px', null, null, 2],
       fontWeight: 'body',
       lineHeight: 'heading',
-      color: 'text',
+      color: 'grey',
       transition: 'color 0.25s',
     },
   },

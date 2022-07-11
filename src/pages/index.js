@@ -32,7 +32,7 @@ export default function Home({ data }) {
           <CoreFeature />
           <WorkFlow />
           
-          <TeamSection  data={data}/>
+          <TeamSection />
           <TestimonialCard />
           
           <Contact/>
@@ -41,15 +41,15 @@ export default function Home({ data }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const { req } = context;
-  const protocol = req.headers['x-forwarded-proto'] || 'http'
-  const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
-  let response = await fetch(`${baseUrl}/api/fetch-users`);
-  let data = await response.json();
-  return {
-      props: {
-         data: data
-      },
-  };
-}
+// export async function getServerSideProps(context) {
+//   const { req } = context;
+//   const protocol = req.headers['x-forwarded-proto'] || 'http'
+//   const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+//   let response = await fetch(`${baseUrl}/api/fetch-users`);
+//   let data = await response.json();
+//   return {
+//       props: {
+//          data: data
+//       },
+//   };
+// }
