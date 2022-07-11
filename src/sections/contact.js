@@ -91,6 +91,7 @@ export default function TeamCard({ src, altText, title, designation, social }) {
                    
                       </Box>
                       <Box>
+                        <hr />
                       <Box>
                         <Image src={Typing}/>
                       <Heading variant="heroPrimary" as="h4">
