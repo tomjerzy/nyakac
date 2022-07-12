@@ -7,11 +7,9 @@ import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
 import { useRouter } from 'next/router';
-import Cookies from 'js-cookie'
-import * as cookie from 'cookie'
-export default function EditProfile({ usr, baseUrl }) {
+export default function EditProfile() {
 
-  const [ user, setUser] = useState(usr)
+  const [ user, setUser] = useState()
     const router = useRouter()
     const [active, setActive] = useState(true)
     const [disabled, setDisabled] = useState(false)
@@ -240,18 +238,18 @@ const styles = {
   },
 };
 
-export async function getServerSideProps(context) {
-  const { query, req } = context;
-  const protocol = req.headers['x-forwarded-proto'] || 'http'
-  const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
-  const cook =  cookie.parse(req.headers.cookie)
-  const auth  = JSON.parse(cook.auth)
-  let response = await fetch(`${baseUrl}/api/${auth.username}`);
-  let data = await response.json();
-  return {
-      props: {
-          baseUrl: baseUrl,
-          usr: data,
-      },
-  };
-}
+// export async function getServerSideProps(context) {
+//   const { query, req } = context;
+//   const protocol = req.headers['x-forwarded-proto'] || 'http'
+//   const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+//   const cook =  cookie.parse(req.headers.cookie)
+//   const auth  = JSON.parse(cook.auth)
+//   let response = await fetch(`${baseUrl}/api/${auth.username}`);
+//   let data = await response.json();
+//   return {
+//       props: {
+//           baseUrl: baseUrl,
+//           usr: data,
+//       },
+//   };
+// }

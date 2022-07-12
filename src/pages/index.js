@@ -16,7 +16,7 @@ import TestimonialCard from '../sections/testimonial';
 import Contact from '../sections/contact'
 import Landing from '../sections/landing';
 import Values from 'components/values'
-export default function Home({ data }) {
+export default function Home() {
 
   return (
     <ThemeProvider theme={theme}>

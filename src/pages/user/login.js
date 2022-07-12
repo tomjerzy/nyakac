@@ -5,8 +5,6 @@ import { useRouter } from 'next/router';
 import theme from 'theme';
 import Layout from 'components/layout';
 import LoginImg from 'assets/login.png';
-import Cookies from 'js-cookie'
-import * as cookie from 'cookie'
 /* components */
 
 import FormLogin from '../../components/forms/LoginForm';
@@ -308,21 +306,21 @@ const styles = {
   },
 };
 
-export async function getServerSideProps(context) {
-  const { req } = context;
-  const protocol = req.headers['x-forwarded-proto'] || 'http'
-  const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
-  var auth = null
-  if(req.headers.cookie) {
-     const cook =  cookie.parse(req.headers.cookie)
-      const dxt  = JSON.parse(cook.auth)
-      auth = dxt
-  }
+// export async function getServerSideProps(context) {
+//   const { req } = context;
+//   const protocol = req.headers['x-forwarded-proto'] || 'http'
+//   const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+//   var auth = null
+//   if(req.headers.cookie) {
+//      const cook =  cookie.parse(req.headers.cookie)
+//       const dxt  = JSON.parse(cook.auth)
+//       auth = dxt
+//   }
  
-  return {
-      props: {
-        baseUrl: baseUrl,
-        auth: auth
-      },
-  };
-}
+//   return {
+//       props: {
+//         baseUrl: baseUrl,
+//         auth: auth
+//       },
+//   };
+// }

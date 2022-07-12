@@ -7,10 +7,8 @@ import { useEffect, useState, useRef } from 'react';
 const axios = require('axios')
 // import SEO from 'components/seo';
 import {useRouter} from 'next/router'
-import Cookies from 'js-cookie';
-import * as cookie from 'cookie';
-export default function Profile({ user, baseUrl, auth }) {
-  const [Source, setSrc] = useState(user.avatar)
+export default function Profile() {
+  const [Source, setSrc] = useState()
   const router = useRouter()
   const [alert, setAlert] = useState(false)
   const inputRef = useRef(null)
@@ -29,7 +27,7 @@ export default function Profile({ user, baseUrl, auth }) {
               method: 'POST',
               body: auth.id
             })
-            Cookies.remove('auth')
+            // Cookies.remove('auth')
            router.push('/')
     } catch(e) {
       console.log(e)
@@ -107,7 +105,7 @@ export default function Profile({ user, baseUrl, auth }) {
           setNotice({...notice, text: ''})
           setFile(null)
         }, 2000)
-        Cookies.remove('auth')
+        // Cookies.remove('auth')
         router.push('/user/login')
       } catch (e) {
         setNotice({...notice, 
@@ -437,23 +435,23 @@ const styles = {
   },
 };
 
-export async function getServerSideProps(context) {
-  var auth = {username: ''};
-  const { query, req } = context;
-  const protocol = req.headers['x-forwarded-proto'] || 'http'
-  const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
-  const cook =  req.headers.cookie
-  if(cook) {
-      const cooked =  cookie.parse(req.headers.cookie)
-      auth  = JSON.parse(cooked.auth)
-  } 
-  let response = await fetch(`${baseUrl}/api/${query.username}`);
-  let data = await response.json();
-  return {
-      props: {
-         auth: auth,
-         baseUrl: baseUrl,
-         user: data,
-      },
-  };
-}
+// export async function getServerSideProps(context) {
+//   var auth = {username: ''};
+//   const { query, req } = context;
+//   const protocol = req.headers['x-forwarded-proto'] || 'http'
+//   const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+//   const cook =  req.headers.cookie
+//   if(cook) {
+//       const cooked =  cookie.parse(req.headers.cookie)
+//       auth  = JSON.parse(cooked.auth)
+//   } 
+//   let response = await fetch(`${baseUrl}/api/${query.username}`);
+//   let data = await response.json();
+//   return {
+//       props: {
+//          auth: auth,
+//          baseUrl: baseUrl,
+//          user: data,
+//       },
+//   };
+// }

@@ -7,11 +7,10 @@ import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import { } from 'react-icons/fa';
 import Router, { useRouter } from 'next/router';
-import * as cookie from 'cookie'
 
-export default function AddInfo({ baseUrl, about, auth}) {
+export default function AddInfo() {
     const [active, setActive] = useState(false)
-    const [dta, setDta] = useState(about)
+    const [dta, setDta] = useState()
     const [disabled, setDisabled] = useState(false)
     const [ notice, setNotice] = useState({
         color: '#ffffff',
@@ -153,23 +152,6 @@ export default function AddInfo({ baseUrl, about, auth}) {
 //     },
 //   };
 // }
-
-export async function getServerSideProps(context) {
-  const { query, req } = context;
-  const protocol = req.headers['x-forwarded-proto'] || 'http'
-  const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
-  const cook =  cookie.parse(req.headers.cookie)
-  const auth  = JSON.parse(cook.auth)
-  let response = await fetch(`${baseUrl}/api/get-about/${auth.id}`);
-  let data = await response.json();
-  return {
-      props: {
-        auth: auth,
-        baseUrl: baseUrl,
-        about: data,
-      },
-  };
-}
 
 const styles = {
   workflow: {

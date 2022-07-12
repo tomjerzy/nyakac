@@ -7,12 +7,11 @@ import theme from 'theme';
 import Layout from 'components/layout';
 import { } from 'react-icons/fa';
 import Router, { useRouter } from 'next/router';
-import * as cookie from 'cookie'
 
-export default function AddBio({baseUrl, bio}) {
+export default function AddBio() {
  
     const [active, setActive] = useState(false)
-    const [dta, setDta] = useState(bio)
+    const [dta, setDta] = useState()
     //const avatar = require(`assets/${user.avatar}`)
     const [disabled, setDisabled] = useState(false)
     const [ notice, setNotice] = useState({
@@ -215,19 +214,3 @@ const styles = {
     ],
   },
 };
-
-export async function getServerSideProps(context) {
-  const { query, req } = context;
-  const protocol = req.headers['x-forwarded-proto'] || 'http'
-  const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
-  const cook =  cookie.parse(req.headers.cookie)
-  const auth  = JSON.parse(cook.auth)
-  let response = await fetch(`${baseUrl}/api/get-bio/${auth.id}`);
-  let data = await response.json();
-  return {
-      props: {
-        baseUrl: baseUrl,
-        bio: data,
-      },
-  };
-}

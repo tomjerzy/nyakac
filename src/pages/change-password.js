@@ -6,9 +6,8 @@ import theme from 'theme';
 import Layout from 'components/layout';
 import LoginImg from 'assets/register.png';
 import {useRouter} from 'next/router';
-import * as cookie from 'cookie';
 
-export default function ChangePass({user, baseUrl}) {
+export default function ChangePass() {
     const router = useRouter()
     const [active, setActive] = useState(false)
     const [auth, setAuth] = useState({
@@ -220,16 +219,16 @@ const styles = {
     ],
   },
 };
-export async function getServerSideProps(context) {
-    const { query, req } = context;
-    const protocol = req.headers['x-forwarded-proto'] || 'http'
-    const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
-    const cook =  cookie.parse(req.headers.cookie)
-    const auth  = JSON.parse(cook.auth)
-    return {
-        props: {
-          user: auth,
-          baseUrl: baseUrl
-        },
-    };
-  }
+// export async function getServerSideProps(context) {
+//     const { query, req } = context;
+//     const protocol = req.headers['x-forwarded-proto'] || 'http'
+//     const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+//     const cook =  cookie.parse(req.headers.cookie)
+//     const auth  = JSON.parse(cook.auth)
+//     return {
+//         props: {
+//           user: auth,
+//           baseUrl: baseUrl
+//         },
+//     };
+//   }

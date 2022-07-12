@@ -75,7 +75,7 @@ export default function TeamCard({ src, altText, title, designation, social }) {
       <Container sx={{backgroundColor: '#E6E6FA', borderRadius: 5}} py="30px">
                     <Grid sx={styles.grid} mb="30px">
                       <Box sx={{textAlign: 'center'}}>
-                        <Image src={Contact} sx={{height: '100px'}}/>
+                        <Image src={Contact} sx={{height: '70px'}}/>
                       <Heading variant="heroPrimary" as="h4">
                         Contact Us
                       </Heading>
@@ -93,7 +93,7 @@ export default function TeamCard({ src, altText, title, designation, social }) {
                       <Box>
                         <hr />
                       <Box sx={{textAlign: 'center'}}>
-                        <Image src={Typing} sx={{height: '100px'}}/>
+                        <Image src={Typing} sx={{height: '70px'}}/>
                       <Heading variant="heroPrimary" as="h4">
                         Write to us...
                       </Heading>

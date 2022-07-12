@@ -11,7 +11,6 @@ export default async function handler(req, res){
         }
       
     } catch (e) {
-        console.log(e)
         res.status(400).json({status: 'error', error: 'Error changing password'})
     } finally 
     { await client.end()}
