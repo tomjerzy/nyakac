@@ -27,7 +27,7 @@ export default function TeamSection() {
     { id: 2,
       avatar: CyndyAvatar,
       name: 'Cyndy Nyamolo',
-      title: 'Strategic consultant',
+      title: 'Head of Economic empowerment',
       about: 'Cyndy Nyamolo is a young Passionate Woman from North Nyakach Ward, Nyakach Constituency. Cyndy holds a Bachelor \n s Degree in Economics and Statistics from Kenyatta University and has over the years displayed exceptional leadership skills within the organization. She is an ardent crusader of the rights and Responsibilities of Youths and Women and she has hands on experience in matters GBV, Women & Leadership,SRH and MHM. Cyndy looks forward to a creating more safe spaces for Women in her Community.',
       social:[
               {path: 'https://facebook.com', name: 'Facebook', icon: <FaFacebookF />},
@@ -38,7 +38,7 @@ export default function TeamSection() {
     { id: 3,
       avatar: MaleAvatar,
       name: 'Ochola Komuono',
-      title: 'Education coordinator',
+      title: 'Head of Agricultural segment',
       about: 'A teacher and Sexual Reproductive Health and Rights(SRHR) Advocate. ',
       social:[
               {path: 'https://facebook.com/', name: 'Facebook', icon: <FaFacebookF />},
@@ -49,7 +49,7 @@ export default function TeamSection() {
     { id: 4,
       avatar: RoseAvatar,
       name: 'Rose Oginga',
-      title: 'Head of welfare department',
+      title: 'Head of Women and youth welfare',
       about: 'I am an educationist,I love things to do with education and I am passionate about the girl child in the society. My main interest is to witness a society of educated individuals and a safe space for the girl child to be able to express themselves and make it to be successful in life I know it might seem impossible but if we all push from our ends,it is possible.',
       social:[
               {path: 'https://facebook.com/Richard', name: 'Facebook', icon: <FaFacebookF />},
@@ -71,7 +71,7 @@ export default function TeamSection() {
     { id: 6,
       avatar: ObangeAvatar,
       name: 'Jane Alma',
-      title: 'Assistant Education Coordinator',
+      title: 'In charge of Educational matters',
       about: 'Jane Alma is a young an  ambitious lady  who is naturally and a trained educator. I hold a Bachelor of degree in special needs education specializing in sign language. My skill and experience in sign language have always earned me a chance of working with NACC. Besides this I am also an experienced researcher who understands a lot when it comes to the challenges that every society is facing.  Jane is also a professional writer with extensive knowledge, skills and experienced in executing different articles. My articles are always of exceptional high quality, original and unique. I trust and believe that through my articles my society will experience a great change..',
       social:[
               {path: 'https://facebook.com/', name: 'Facebook', icon: <FaFacebookF />},
@@ -82,7 +82,7 @@ export default function TeamSection() {
     { id: 7,
       avatar: PhabianAvatar,
       name: 'Phabian Omollo',
-      title: 'Gender Advocate',
+      title: 'In charge of Social concerns',
       about: `Phabian Ochieng Omollo
       MBA Gender and Development Studies
       Bachelor of Arts- Gender and Development Studies 

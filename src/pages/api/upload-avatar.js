@@ -1,7 +1,5 @@
-const multer = require('multer');
 import client from '../../../db/db'
 import nextConnect from 'next-connect';
-const aws = require('aws-sdk');
 // aws.config.update({
 //   accessKeyId: 'AKIAJTPPQZOH22ZRQPIQ',
 //   secretAccessKey: '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',
@@ -9,17 +7,17 @@ const aws = require('aws-sdk');
 // });
 // const multerS3 = require('multer-s3')
 // const s3 = new aws.S3();
-const s3 = new aws.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-})
+// const s3 = new aws.S3({
+//   accessKeyId: process.env.AWS_ACCESS_KEY,
+//   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+// })
 
-const upload = multer({
-    storage: multer.diskStorage({
-      destination: 'public/images',
-      filename: (req, file, cb) => cb(null,  Date.now() + '.'+file.originalname.split('.').pop()),
-    }),
-  });
+// const upload = multer({
+//     storage: multer.diskStorage({
+//       destination: 'public/images',
+//       filename: (req, file, cb) => cb(null,  Date.now() + '.'+file.originalname.split('.').pop()),
+//     }),
+//   });
 // const upload = multer({
 //   storage: multerS3({
 //     s3: s3,

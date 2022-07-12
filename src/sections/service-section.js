@@ -1,11 +1,11 @@
 /** @jsx jsx */
 import React, { useState } from 'react';
-import { jsx, Container, Box, Grid, Text, Heading, Button, Image } from 'theme-ui';
+import { jsx, Container, Box, Text, Button, Image, Embed } from 'theme-ui';
 import { keyframes } from '@emotion/core';
 import TextFeature from 'components/text-feature';
 import dynamic from 'next/dynamic';
-const ModalVideo = dynamic(() => import('react-modal-video'), { ssr: false });
-//import ModalVideo from 'react-modal-video';
+//const ModalVideo = dynamic(() => import('react-modal-video'), { ssr: false });
+import ModalVideo from 'react-modal-video';
 import { IoIosPlay } from 'react-icons/io';
 
 import ServiceThumb from 'assets/service-thumb.jpg';
@@ -39,7 +39,7 @@ export default function ServiceSection() {
     <section sx={{ variant: 'section.services'}}>
       <Container sx={styles.containerBox} mt="30px">
         <Box sx={styles.thumbnail}>
-          <Image src={ServiceThumb} alt="Thumbnail"/>
+          {/* <Image src={ServiceThumb} alt="Thumbnail"/>
           <Button sx={styles.videoBtn}
           onClick={handleClick}
           aria-label="Play Button"
@@ -47,7 +47,23 @@ export default function ServiceSection() {
             <span>
               <IoIosPlay />
             </span>
-          </Button>
+          </Button> */}
+          {/* <Embed src="https://www.youtube.com/embed/b-LTA85deuk" 
+          sx={{width: '100%', height: '300px', borderRadius: '20px'}}/> */}
+           <Box
+              as="iframe"
+              src="https://www.youtube.com/embed/b-LTA85deuk"
+              allowFullScreen={false}
+              allow={true}
+              __css={{
+              borderRadius: '20px',
+                width: "100%",
+                height: "300px",
+            
+                border: 0
+              }}
+            />
+   
           <Box sx={styles.shapeBox}>
             <Image src={shapePattern}/>
           </Box>
@@ -61,10 +77,11 @@ export default function ServiceSection() {
           not knowing where to begin. .</Text>
         </Box>
       </Container>
-      <ModalVideo channel="youtube"
+      {/* <ModalVideo channel="youtube"
       isOpen={videoOpen}
       videoId="b-LTA85deuk"
-      onClose={() =>setVideoOpen(false)}/>
+      onClose={() =>setVideoOpen(false)}/> */}
+      
     </section>
   );
 }
