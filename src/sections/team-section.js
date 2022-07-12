@@ -15,7 +15,7 @@ export default function TeamSection() {
       avatar: RichardAvatar,
       name: 'Richard Osungu',
       title: 'Head of operations',
-      about: 'Richard Osungu - I am a young development oriented individual. I have initiated and participated in various development projects, now and before. I am graduate of Mathematics (Applied) and Computer Science from Meru University with a certificate in Monitoring and Evaluation from MKU. I am passionate about Data, Research and Monitoring and Evaluation.',
+      about: 'Richard Osungu - Richard is young development oriented youth from West Nyakach Ward, Nyakach Sub County in Kisumu County. Richard has initiated and participated in various development projects, now and before. He is a graduate of Mathematics (Applied) and Computer Science from Meru University with a certificate in Monitoring and Evaluation from MKU. He is passionate about Data, Research and Monitoring and Evaluation.  He dreams of a better Sub County, informed and an empowered population. It can be done, especially when the right tools are in the right hands',
       social:[
               {path: 'https://facebook.com', name: 'Facebook', icon: <FaFacebookF />},
               {path: 'https://instagram.com', name: 'Instagram', icon: <FaInstagram />},
