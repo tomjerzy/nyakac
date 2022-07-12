@@ -15,7 +15,7 @@ export default function TeamSection() {
       avatar: RichardAvatar,
       name: 'Richard Osungu',
       title: 'Head of operations',
-      about: 'Richard Osungu (Binsi Mwakolo as he is fondly called) is a young development oriented and energetic youth who has big dreams for his life, that of his family, his neighbors, his community, his Sub County and believes that people deserve a better life. Having grown up entirely in the hands of relatives and largely well wishers, his life has shaped him to be mindful of others and try to make them better in his own small ways. He is a believer in what is right works.',
+      about: 'Richard Osungu - I am a young development oriented individual. I have initiated and participated in various development projects, now and before. I am graduate of Mathematics (Applied) and Computer Science from Meru University with a certificate in Monitoring and Evaluation from MKU. I am passionate about Data, Research and Monitoring and Evaluation.',
       social:[
               {path: 'https://facebook.com', name: 'Facebook', icon: <FaFacebookF />},
               {path: 'https://instagram.com', name: 'Instagram', icon: <FaInstagram />},
