@@ -10,13 +10,14 @@ import MaleAvatar from 'assets/male.png'
 import FemaleAvatar from 'assets/woman.png'
 import ObangeAvatar from 'assets/obange.jpeg'
 import PhabianAvatar from 'assets/icons/phabian.jpeg'
+import RoseAvatar from 'assets/Team/rose.jpeg'
 export default function TeamSection() {
   const data = [
     { id: 1,
       avatar: RichardAvatar,
       name: 'Richard Osungu',
       title: 'Head of operations',
-      about: 'Richard is young development oriented youth from West Nyakach Ward, Nyakach Sub County in Kisumu County. Richard has initiated and participated in various development projects, now and before. He is a graduate of Mathematics (Applied) and Computer Science from Meru University with a certificate in Monitoring and Evaluation from MKU. He is passionate about Data, Research and Monitoring and Evaluation.  He dreams of a better Sub County, informed and an empowered population. It can be done, especially when the right tools are in the right hands',
+      about: 'Richard is young, development oriented youth from West Nyakach Ward, Nyakach Sub County in Kisumu County. Richard has initiated and participated in various development projects, now and before. He is a graduate of Mathematics (Applied) and Computer Science from Meru University with a certificate in Monitoring and Evaluation from MKU. He is passionate about Data, Research and Monitoring and Evaluation.  He dreams of a better Sub County, informed and an empowered population. It can be done, especially when the right tools are in the right hands',
       social:[
               {path: 'https://facebook.com', name: 'Facebook', icon: <FaFacebookF />},
               {path: 'https://instagram.com', name: 'Instagram', icon: <FaInstagram />},
@@ -46,7 +47,7 @@ export default function TeamSection() {
       ]
     },
     { id: 4,
-      avatar: FemaleAvatar,
+      avatar: RoseAvatar,
       name: 'Rose Oginga',
       title: 'Head of welfare department',
       about: 'I am an educationist,I love things to do with education and I am passionate about the girl child in the society. My main interest is to witness a society of educated individuals and a safe space for the girl child to be able to express themselves and make it to be successful in life I know it might seem impossible but if we all push from our ends,it is possible.',
