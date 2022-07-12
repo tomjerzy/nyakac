@@ -9,13 +9,14 @@ import CyndyAvatar from 'assets/1657532914389.jpeg'
 import MaleAvatar from 'assets/male.png'
 import FemaleAvatar from 'assets/woman.png'
 import ObangeAvatar from 'assets/obange.jpeg'
+import PhabianAvatar from 'assets/icons/phabian.jpeg'
 export default function TeamSection() {
   const data = [
     { id: 1,
       avatar: RichardAvatar,
       name: 'Richard Osungu',
       title: 'Head of operations',
-      about: 'Richard Osungu - Richard is young development oriented youth from West Nyakach Ward, Nyakach Sub County in Kisumu County. Richard has initiated and participated in various development projects, now and before. He is a graduate of Mathematics (Applied) and Computer Science from Meru University with a certificate in Monitoring and Evaluation from MKU. He is passionate about Data, Research and Monitoring and Evaluation.  He dreams of a better Sub County, informed and an empowered population. It can be done, especially when the right tools are in the right hands',
+      about: 'Richard is young development oriented youth from West Nyakach Ward, Nyakach Sub County in Kisumu County. Richard has initiated and participated in various development projects, now and before. He is a graduate of Mathematics (Applied) and Computer Science from Meru University with a certificate in Monitoring and Evaluation from MKU. He is passionate about Data, Research and Monitoring and Evaluation.  He dreams of a better Sub County, informed and an empowered population. It can be done, especially when the right tools are in the right hands',
       social:[
               {path: 'https://facebook.com', name: 'Facebook', icon: <FaFacebookF />},
               {path: 'https://instagram.com', name: 'Instagram', icon: <FaInstagram />},
@@ -78,6 +79,22 @@ export default function TeamSection() {
       ]
     },
     { id: 7,
+      avatar: PhabianAvatar,
+      name: 'Phabian Omollo',
+      title: 'Gender Advocate',
+      about: `Phabian Ochieng Omollo
+      MBA Gender and Development Studies
+      Bachelor of Arts- Gender and Development Studies 
+      all from Kenyatta University
+      Current Deputy Governor Aspirant- Kisumu County
+      I am a pragmatic, selfless individual with an adorable zeal to elevate the social status of the society through my gaines experience. Particularly I am a gender Advocate with a comprehensive educational and professional background to enable me steer the organization in gender and development related matters. Besides, I am a human right defender and i believe in incorporating such elements in protecting the welfare of both boys and girls in Nyakach`,
+      social:[
+              {path: 'https://facebook.com/', name: 'Facebook', icon: <FaFacebookF />},
+              {path: 'https://instagram.com', name: 'Instagram', icon: <FaInstagram />},
+              {path: 'https://twitter.com', name: 'Twitter', icon: <FaTwitter />}
+      ]
+    },
+    { id: 8,
       avatar: MaleAvatar,
       name: 'Tom Owuor',
       title: 'Technical consultant',
